@@ -856,6 +856,115 @@ details[open] summary::before {
   color: var(--color-text-secondary);
   line-height: 1.7;
 }
+.market table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  margin-top: 12px;
+}
+.market th,
+.market td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+.market th {
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-alt);
+}
+.market td:first-child { font-weight: 600; }
+
+/* ── Floating Ask AI Bubble ─────────────────────── */
+
+.ask-ai-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+.ask-ai-fab .fab-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.ask-ai-fab .fab-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(37,99,235,0.45);
+}
+.ask-ai-fab .fab-btn svg {
+  width: 26px;
+  height: 26px;
+  fill: white;
+}
+.ask-ai-popup {
+  display: none;
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  width: 340px;
+  background: #1e293b;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  padding: 24px;
+  z-index: 1001;
+  color: #e2e8f0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  animation: popupIn 0.2s ease-out;
+}
+@keyframes popupIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.ask-ai-popup.open { display: block; }
+.ask-ai-popup .popup-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.ask-ai-popup .popup-close:hover { color: #e2e8f0; }
+.ask-ai-popup h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+.ask-ai-popup a { color: #60a5fa; }
+.ask-ai-popup code {
+  display: block;
+  background: rgba(0,0,0,0.3);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #93c5fd;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+@media (max-width: 420px) {
+  .ask-ai-popup { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
+  .ask-ai-fab { bottom: 16px; right: 16px; }
+}
+
 .details-content table {
   width: 100%;
   border-collapse: collapse;
@@ -1308,15 +1417,15 @@ details[open] summary::before {
     <div class="fade-in">
       <p class="section-label">The Bigger Vision</p>
       <h2 class="section-title" style="color:white;">Team as a Service</h2>
-      <p class="section-subtitle">Every organization running eKYC faces this exact problem &mdash; and at 200+ countries, it's unsolvable with humans alone. We solved it for ourselves. Now we can solve it for everyone.</p>
+      <p class="section-subtitle">Every organization running eKYC faces this exact problem &mdash; and at 200+ countries, it's unsolvable by any team alone. We augmented our own team with AAICLAW. Now we can do the same for others.</p>
     </div>
 
     <div class="options-grid fade-in">
       <div class="option-card">
         <div class="x-mark">&times;</div>
         <h3>Option A: Build In-House</h3>
-        <p>Hire 2&ndash;3 ML engineers who understand both CV and document fraud. Train them for 6+ months. Hope they don't leave.</p>
-        <div class="option-cost">$300&ndash;500K/yr &middot; Slow &middot; Fragile</div>
+        <p>Hire 2&ndash;3 ML engineers who understand both CV and document fraud. Train them for 6+ months. They spend most of their time on repetitive model updates instead of innovation.</p>
+        <div class="option-cost">$300&ndash;500K/yr &middot; Slow &middot; Talent bottleneck</div>
       </div>
       <div class="option-card">
         <div class="x-mark">&times;</div>
@@ -1335,7 +1444,7 @@ details[open] summary::before {
     <div class="taas-solution fade-in">
       <h3>Option D: AAICLAW</h3>
       <p class="tagline">Ship Expertise, Not Data</p>
-      <p style="color:#cbd5e1;font-size:0.95rem;line-height:1.7;max-width:680px;">Deploy a virtual expert team into the customer's private infrastructure. It monitors their traffic, detects attacks, proposes strategies, executes training pipelines, and learns from their specific data &mdash; all without any data leaving their perimeter.</p>
+      <p style="color:#cbd5e1;font-size:0.95rem;line-height:1.7;max-width:680px;">Augment the customer's existing team with an AI-powered expert system deployed into their private infrastructure. It handles the repetitive model update cycles &mdash; monitoring traffic, detecting attacks, executing training pipelines &mdash; so their engineers can focus on higher-value work. All without any data leaving the perimeter.</p>
 
       <div class="taas-pillars">
         <div class="taas-pillar">
@@ -1409,33 +1518,66 @@ Recommendation: APPROVE
   <div class="container">
     <div class="fade-in">
       <p class="section-label">Market Opportunity</p>
-      <h2 class="section-title">A $23&ndash;45M Addressable Market</h2>
-      <p class="section-subtitle">Every organization running eKYC needs forgery defense model updates. Most solve it worse than we do &mdash; and pay far more.</p>
+      <h2 class="section-title">Land with Forgery, Expand to Full IDV</h2>
+      <p class="section-subtitle">Forgery defense is our entry point &mdash; the pain is acute and the differentiation is clear. But the agent architecture generalizes to the entire IDV model lifecycle: OCR, liveness, face matching, document classification, and beyond.</p>
     </div>
 
     <div class="market-highlights fade-in">
       <div class="market-highlight">
         <div class="num">220&ndash;420</div>
-        <div class="label">Potential customers globally</div>
+        <div class="label">Potential customers (forgery alone)</div>
       </div>
       <div class="market-highlight">
-        <div class="num">$100K</div>
-        <div class="label">Average deal size / year</div>
+        <div class="num">$80&ndash;150K</div>
+        <div class="label">Avg deal size / year (vs $300&ndash;500K in-house team)</div>
       </div>
       <div class="market-highlight">
         <div class="num">$1M</div>
-        <div class="label">ARR achievable in 12&ndash;18 months</div>
+        <div class="label">ARR target in 12&ndash;18 months</div>
       </div>
       <div class="market-highlight">
-        <div class="num">1/5</div>
-        <div class="label">Cost vs. building an in-house team</div>
+        <div class="num">$6.4B</div>
+        <div class="label">Document fraud detection market (2024)</div>
       </div>
+    </div>
+
+    <div class="fade-in" style="margin-top:48px;">
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:4px;">Land &amp; Expand</h3>
+      <p style="font-size:0.92rem;color:var(--color-text-secondary);margin-bottom:20px;">From forgery defense into full IDV model management</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr><th>Phase</th><th>Scope</th><th>ACV per Customer</th><th>Benchmark</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Land</strong><br><span style="font-weight:400;font-size:0.82rem;color:var(--color-text-secondary);">Year 1</span></td>
+              <td>Forgery detection (7 sub-models)</td>
+              <td>$80&ndash;150K</td>
+              <td>No direct competitor in this niche</td>
+            </tr>
+            <tr>
+              <td><strong>Expand</strong><br><span style="font-weight:400;font-size:0.82rem;color:var(--color-text-secondary);">Year 2</span></td>
+              <td>+ OCR updates + document classification</td>
+              <td>$150&ndash;250K</td>
+              <td>Jumio: $56K; Onfido: $60K (full IDV suite)</td>
+            </tr>
+            <tr>
+              <td><strong>Full IDV</strong><br><span style="font-weight:400;font-size:0.82rem;color:var(--color-text-secondary);">Year 3+</span></td>
+              <td>+ Liveness + face matching + full lifecycle</td>
+              <td>$250&ndash;400K</td>
+              <td>In-house team: $400&ndash;700K/yr (4&ndash;6 engineers)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:16px;font-size:0.88rem;color:var(--color-text-secondary);line-height:1.6;">AAICLAW augments the customer's existing team &mdash; letting their engineers focus on innovation while the system handles the repetitive model update cycles.</p>
     </div>
 
     <div class="moats fade-in">
       <div class="moat">
         <h4>Experience Memory Lock-In</h4>
-        <p>After 6 months, each customer's AAICLAW instance has accumulated 10&ndash;20+ structured experience entries specific to their traffic patterns, document types, and regional quirks. Switching to a competitor means losing all accumulated knowledge.</p>
+        <p>After 6 months, each customer's AAICLAW instance has accumulated 10&ndash;20+ structured experience entries specific to their traffic patterns, document types, and regional quirks. This institutional knowledge is irreplaceable.</p>
       </div>
       <div class="moat">
         <h4>Cross-Customer Network Effect</h4>
@@ -1448,27 +1590,41 @@ Recommendation: APPROVE
     </div>
 
     <details class="fade-in">
-      <summary>Market segments and pricing model</summary>
+      <summary>Market segments, pricing, and benchmarks</summary>
       <div class="details-content">
+        <p style="font-weight:600;margin-bottom:12px;">Target Segments (Forgery Entry Point)</p>
         <table>
           <thead><tr><th>Segment</th><th>Potential Customers</th><th>Avg Deal Size</th></tr></thead>
           <tbody>
-            <tr><td>Tier-1 Banks (SEA + LATAM + MENA)</td><td>50&ndash;100</td><td>$150K/yr</td></tr>
-            <tr><td>Digital Banks &amp; Neobanks</td><td>100&ndash;200</td><td>$80K/yr</td></tr>
-            <tr><td>Crypto Exchanges (Top 50)</td><td>30&ndash;50</td><td>$100K/yr</td></tr>
-            <tr><td>Payment Processors</td><td>30&ndash;50</td><td>$100K/yr</td></tr>
-            <tr><td>eKYC/IDV Vendors (White-label)</td><td>10&ndash;20</td><td>$200K/yr</td></tr>
+            <tr><td>Tier-1 Banks (SEA + LATAM + MENA)</td><td>50&ndash;100</td><td>$100&ndash;150K/yr</td></tr>
+            <tr><td>Digital Banks &amp; Neobanks</td><td>100&ndash;200</td><td>$50&ndash;80K/yr</td></tr>
+            <tr><td>Crypto Exchanges (Top 50)</td><td>30&ndash;50</td><td>$80&ndash;100K/yr</td></tr>
+            <tr><td>Payment Processors</td><td>30&ndash;50</td><td>$80&ndash;100K/yr</td></tr>
+            <tr><td>eKYC/IDV Vendors (White-label)</td><td>10&ndash;20</td><td>$150&ndash;200K/yr</td></tr>
           </tbody>
         </table>
-        <table style="margin-top:24px;">
+        <p style="font-weight:600;margin-bottom:12px;margin-top:24px;">Pricing Model</p>
+        <table>
           <thead><tr><th>Tier</th><th>What Customer Gets</th><th>Pricing</th></tr></thead>
           <tbody>
-            <tr><td>Platform License</td><td>Core system, CLI, standard skills, LLM integration, Experience Memory</td><td>$50&ndash;100K/yr</td></tr>
-            <tr><td>Skill Modules</td><td>Pre-built skills for specific sub-model types</td><td>$10&ndash;20K per module</td></tr>
-            <tr><td>Custom Integration</td><td>Adapters for customer's infrastructure</td><td>$20&ndash;50K one-time</td></tr>
+            <tr><td>Platform License</td><td>Core agent system, CLI, standard skills, LLM integration, Experience Memory</td><td>$50&ndash;100K/yr</td></tr>
+            <tr><td>Skill Modules</td><td>Pre-built skills for specific model types (forgery, OCR, liveness, etc.)</td><td>$10&ndash;20K per module</td></tr>
+            <tr><td>Custom Integration</td><td>Adapters for customer's infrastructure (data sources, GPU setup, deployment)</td><td>$20&ndash;50K one-time</td></tr>
             <tr><td>Managed Service</td><td>Remote monitoring, workflow optimization, new skill modules</td><td>$5&ndash;10K/month</td></tr>
           </tbody>
         </table>
+        <p style="font-weight:600;margin-bottom:12px;margin-top:24px;">Industry Pricing Benchmarks</p>
+        <table>
+          <thead><tr><th>Reference</th><th>Annual Cost</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td>Jumio (full IDV suite) median deal</td><td>$55,850/yr</td><td>Vendr 2025, 18 data points</td></tr>
+            <tr><td>Onfido (full IDV suite) median deal</td><td>$60,475/yr</td><td>Vendr 2025, 12 data points</td></tr>
+            <tr><td>In-house specialist team (2 engineers)</td><td>$200&ndash;250K/yr</td><td>Market salary data</td></tr>
+            <tr><td>In-house full IDV team (4&ndash;6 engineers)</td><td>$400&ndash;700K/yr</td><td>Market salary data</td></tr>
+            <tr><td>Document fraud detection market (global)</td><td>$6.4B (2024)</td><td>Growth Market Reports 2024</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:16px;font-size:0.88rem;color:var(--color-text-secondary);">Note: AdvanceAI's existing 500+ enterprise client base provides a natural cross-sell channel &mdash; AAICLAW can be offered as an add-on to current eKYC customers.</p>
       </div>
     </details>
   </div>
@@ -1520,8 +1676,8 @@ Recommendation: APPROVE
         <div class="label">Timeline to first external customer</div>
       </div>
       <div class="invest-item">
-        <div class="num">$23&ndash;45M</div>
-        <div class="label">Total addressable market per year</div>
+        <div class="num">$6.4B</div>
+        <div class="label">Document fraud detection market (2024)</div>
       </div>
       <div class="invest-item">
         <div class="num">$1M ARR</div>
@@ -1530,7 +1686,7 @@ Recommendation: APPROVE
     </div>
 
     <div class="risk-note fade-in">
-      <strong>Risk is capped, upside is not.</strong> If the LLM analysis quality is poor, the automation layer alone still delivers ~40% of total value. If Experience Memory doesn't improve over time, each run is still faster than manual. The downside is "we built a good automation tool." The upside is "we built a self-learning system that becomes a product addressing a $23&ndash;45M market."
+      <strong>Risk is capped, upside is not.</strong> If the LLM analysis quality is poor, the automation layer alone still delivers ~40% of total value. If Experience Memory doesn't improve over time, each run is still faster than manual. The downside is "we built a good automation tool." The upside is "we built a self-learning platform that expands from forgery defense into full IDV model management."
     </div>
   </div>
 </section>
@@ -1539,11 +1695,7 @@ Recommendation: APPROVE
 <footer class="site-footer">
   <div class="container">
     <h2>From Internal Tool to Industry Solution</h2>
-    <p>AAICLAW &mdash; a virtual expert team that ships expertise to private data, turning eKYC forgery defense from a headcount problem into a software product with compounding intelligence.</p>
-    <div style="margin-top:32px;padding:20px 24px;background:rgba(255,255,255,0.06);border-radius:10px;border:1px solid #334155;text-align:left;max-width:600px;margin-left:auto;margin-right:auto;">
-      <p style="font-size:0.88rem;font-weight:600;color:#93c5fd;margin-bottom:8px;">Deep Dive with AI</p>
-      <p style="font-size:0.85rem;color:#94a3b8;line-height:1.6;">Want to explore the technical details? Open our <a href="data.html" style="color:#60a5fa;">machine-readable data page</a> and paste its URL into ChatGPT or Claude with your questions &mdash; the AI will analyze our architecture, pipeline results, and training data for you.</p>
-    </div>
+    <p>AAICLAW &mdash; an AI-powered expert system that ships expertise to private data, augmenting teams to manage eKYC models at a scale no team can handle alone, with compounding intelligence.</p>
     <div class="footer-line">AAICLAW &middot; Team as a Service &middot; 2026</div>
   </div>
 </footer>
@@ -1574,5 +1726,40 @@ Recommendation: APPROVE
   }, { passive: true });
 })();
 </script>
+<!-- ═══════════════ FLOATING ASK AI BUBBLE ═══════════════ -->
+<div class="ask-ai-fab">
+  <div class="ask-ai-popup" id="askAiPopup">
+    <button class="popup-close" id="askAiClose">&times;</button>
+    <h4>Deep Dive with AI</h4>
+    <p>Paste our <a href="data.html" target="_blank">data page URL</a> into ChatGPT or Claude and ask anything about AAICLAW's architecture, results, or market data.</p>
+    <code>Read this page and summarize the key achievements:
+https://zhongtiannie.github.io/aaiclaw-pitch/data.html</code>
+    <p style="margin-top:12px;color:#64748b;font-size:0.82rem;">The data page is structured for AI parsing &mdash; it contains pipeline logs, training metrics, cost analysis, and technical specs.</p>
+  </div>
+  <button class="fab-btn" id="askAiFab" aria-label="Ask AI about AAICLAW">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12zm-9-4h2v2h-2v-2zm0-6h2v4h-2V6z"/></svg>
+  </button>
+</div>
+
+<script>
+(function() {
+  var fab = document.getElementById('askAiFab');
+  var popup = document.getElementById('askAiPopup');
+  var close = document.getElementById('askAiClose');
+
+  fab.addEventListener('click', function() {
+    popup.classList.toggle('open');
+  });
+  close.addEventListener('click', function() {
+    popup.classList.remove('open');
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.ask-ai-fab')) {
+      popup.classList.remove('open');
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
