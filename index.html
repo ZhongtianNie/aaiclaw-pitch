@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAICLAW — Team as a Service</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --color-bg: #ffffff;
+  --color-bg-alt: #f7f8fa;
+  --color-bg-dark: #0f1117;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #5a5a7a;
+  --color-text-light: #e0e0e8;
+  --color-accent: #2563eb;
+  --color-accent-light: #dbeafe;
+  --color-accent-dark: #1d4ed8;
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  --max-width: 1120px;
+  --section-padding: 96px 24px;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Utility ─────────────────────────────────────── */
+
+.container { max-width: var(--max-width); margin: 0 auto; }
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  max-width: 680px;
+  line-height: 1.7;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Nav ─────────────────────────────────────────── */
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+}
+.nav-logo {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--color-accent); }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--color-accent); }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+}
+
+/* ── Section 1: Hero ─────────────────────────────── */
+
+.hero {
+  padding: 140px 24px 96px;
+  text-align: center;
+  background: linear-gradient(180deg, #f0f4ff 0%, var(--color-bg) 100%);
+}
+.hero .badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5.5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero .sub {
+  font-size: 1.15rem;
+  color: var(--color-text-secondary);
+  max-width: 640px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero .hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  margin-top: 48px;
+}
+.hero .hero-stat { text-align: center; }
+.hero .hero-stat .num {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+.hero .hero-stat .label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+/* ── Section 2: Problem ──────────────────────────── */
+
+.problem { padding: var(--section-padding); background: var(--color-bg); }
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.problem-card {
+  padding: 32px 28px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: var(--color-bg);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.problem-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+.problem-card .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+.problem-card .icon.red { background: #fef2f2; }
+.problem-card .icon.orange { background: #fffbeb; }
+.problem-card .icon.purple { background: #f5f3ff; }
+.problem-card .icon.blue { background: #eff6ff; }
+.problem-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.problem-card p {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+.problem-card .stat {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-danger);
+}
+
+/* ── Section 3: Solution ─────────────────────────── */
+
+.solution { padding: var(--section-padding); background: var(--color-bg-alt); }
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 40px;
+  font-size: 0.92rem;
+}
+.comparison-table th,
+.comparison-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+.comparison-table th {
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+}
+.comparison-table td:first-child {
+  font-weight: 600;
+  color: var(--color-text);
+}
+.comparison-table .before { color: var(--color-text-secondary); }
+.comparison-table .after { color: var(--color-accent-dark); font-weight: 600; }
+
+.workflow-diagram {
+  margin-top: 56px;
+  padding: 40px 32px;
+  background: var(--color-bg);
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+}
+.workflow-diagram h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.workflow-diagram .workflow-note {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 32px;
+}
+
+.workflow-steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 150px;
+  position: relative;
+}
+.workflow-step .step-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  border: 2px solid var(--color-accent);
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+  position: relative;
+  z-index: 1;
+}
+.workflow-step .step-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+.workflow-step .step-desc {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+.workflow-arrow {
+  display: flex;
+  align-items: center;
+  padding-top: 14px;
+  color: var(--color-accent);
+  font-size: 1.2rem;
+  min-width: 32px;
+  justify-content: center;
+}
+.workflow-loop {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .workflow-steps { flex-direction: column; align-items: center; }
+  .workflow-arrow { transform: rotate(90deg); padding: 8px 0; min-width: auto; }
+  .workflow-step { max-width: 220px; }
+}
+
+/* ── Section 4: Proof ────────────────────────────── */
+
+.proof { padding: var(--section-padding); background: var(--color-bg); }
+.proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+@media (max-width: 768px) {
+  .proof-grid { grid-template-columns: 1fr; }
+}
+.proof-card {
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.proof-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.proof-card ul {
+  list-style: none;
+  padding: 0;
+}
+.proof-card li {
+  padding: 8px 0;
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.proof-card li::before {
+  content: "✓";
+  color: var(--color-success);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.proof-highlight {
+  padding: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f1117 100%);
+  color: white;
+  grid-column: 1 / -1;
+}
+.proof-highlight h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #93c5fd;
+  margin-bottom: 16px;
+}
+.proof-highlight .result-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.proof-highlight .result-num {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.proof-highlight .result-num.before-num { color: #f87171; }
+.proof-highlight .result-num.after-num { color: #34d399; }
+.proof-highlight .result-arrow {
+  font-size: 1.8rem;
+  color: #93c5fd;
+}
+.proof-highlight .result-context {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* ── Section 5: Impact Numbers ───────────────────── */
+
+.impact { padding: var(--section-padding); background: var(--color-bg-alt); }
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+.impact-stat {
+  text-align: center;
+  padding: 24px;
+}
+.impact-stat .num {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  line-height: 1;
+}
+.impact-stat .num-suffix {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.impact-stat .label {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* ── Section 6: Compound Effect ──────────────────── */
+
+.compound { padding: var(--section-padding); background: var(--color-bg); }
+
+.compound-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  margin-top: 48px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .compound-content { grid-template-columns: 1fr; }
+}
+
+.curve-container {
+  aspect-ratio: 4/3;
+  position: relative;
+}
+.curve-container svg { width: 100%; height: 100%; }
+
+.compound-stages { display: flex; flex-direction: column; gap: 28px; }
+.stage {
+  padding: 20px 24px;
+  border-radius: 10px;
+  border-left: 3px solid;
+  background: var(--color-bg-alt);
+}
+.stage.s1 { border-color: #93c5fd; }
+.stage.s2 { border-color: #60a5fa; }
+.stage.s3 { border-color: var(--color-accent); }
+.stage .stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.stage .stage-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+.stage .stage-pct {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.stage .stage-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.compound-quote {
+  margin-top: 40px;
+  padding: 24px 28px;
+  background: var(--color-bg-alt);
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--color-text);
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+/* ── Section 7: TaaS Vision ─────────────────────── */
+
+.taas { padding: var(--section-padding); background: var(--color-bg-dark); color: white; }
+.taas .section-label { color: #93c5fd; }
+.taas .section-subtitle { color: #94a3b8; }
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+@media (max-width: 768px) {
+  .options-grid { grid-template-columns: 1fr; }
+}
+.option-card {
+  padding: 28px 24px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  background: rgba(255,255,255,0.03);
+  position: relative;
+}
+.option-card .x-mark {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(220,38,38,0.15);
+  color: #f87171;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.option-card h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+.option-card p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+.option-card .option-cost {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #f87171;
+}
+
+.taas-solution {
+  margin-top: 48px;
+  padding: 40px 36px;
+  border-radius: 16px;
+  border: 2px solid var(--color-accent);
+  background: rgba(37,99,235,0.06);
+}
+.taas-solution h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 8px;
+}
+.taas-solution .tagline {
+  font-size: 1.05rem;
+  color: #93c5fd;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+.taas-pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.taas-pillar h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 6px;
+}
+.taas-pillar p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.taas-contrast {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 48px;
+}
+@media (max-width: 768px) {
+  .taas-contrast { grid-template-columns: 1fr; }
+}
+.contrast-box {
+  padding: 28px;
+  border-radius: 12px;
+}
+.contrast-box.traditional {
+  background: rgba(220,38,38,0.08);
+  border: 1px solid rgba(220,38,38,0.2);
+}
+.contrast-box.aaiclaw-way {
+  background: rgba(37,99,235,0.08);
+  border: 1px solid rgba(37,99,235,0.3);
+}
+.contrast-box h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.contrast-box.traditional h4 { color: #f87171; }
+.contrast-box.aaiclaw-way h4 { color: #60a5fa; }
+.contrast-box ul {
+  list-style: none;
+  padding: 0;
+}
+.contrast-box li {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  padding: 6px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* ── Section 8: Market ───────────────────────────── */
+
+.market { padding: var(--section-padding); background: var(--color-bg); }
+
+.market-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 28px;
+  margin-top: 48px;
+}
+.market-highlight {
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.market-highlight .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  line-height: 1.1;
+}
+.market-highlight .label {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+}
+
+.moats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.moat {
+  padding: 28px;
+  border-radius: 12px;
+  background: var(--color-bg-alt);
+}
+.moat h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.moat p {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Section 9: Roadmap ──────────────────────────── */
+
+.roadmap { padding: var(--section-padding); background: var(--color-bg-alt); }
+
+.timeline {
+  margin-top: 48px;
+  max-width: 720px;
+}
+.timeline-item {
+  display: flex;
+  gap: 24px;
+  padding-bottom: 36px;
+  position: relative;
+}
+.timeline-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 44px;
+  bottom: 0;
+  width: 2px;
+  background: #e5e7eb;
+}
+.timeline-item.done:not(:last-child)::after {
+  background: var(--color-success);
+}
+.timeline-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  border: 2px solid #e5e7eb;
+  background: white;
+  color: var(--color-text-secondary);
+}
+.timeline-item.done .timeline-dot {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+.timeline-item.next .timeline-dot {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+.timeline-body h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.timeline-item.done .timeline-body h3 {
+  color: var(--color-success);
+}
+.timeline-body .meta {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+.timeline-body p {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.investment-summary {
+  margin-top: 48px;
+  padding: 36px;
+  border-radius: 16px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 768px) {
+  .investment-summary { grid-template-columns: 1fr; }
+}
+.investment-summary .invest-item .num {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  line-height: 1;
+}
+.investment-summary .invest-item .label {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  margin-top: 6px;
+}
+.risk-note {
+  margin-top: 32px;
+  padding: 24px 28px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  font-size: 0.92rem;
+  color: #166534;
+  line-height: 1.6;
+}
+
+/* ── Section 10: Footer ──────────────────────────── */
+
+.site-footer {
+  padding: 64px 24px;
+  background: var(--color-bg-dark);
+  text-align: center;
+  color: #94a3b8;
+}
+.site-footer h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+.site-footer p {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-top: 8px;
+}
+.site-footer .footer-line {
+  margin-top: 48px;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+/* ── Expandable Details ──────────────────────────── */
+
+details {
+  margin-top: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+details[open] {
+  border-color: var(--color-accent);
+}
+summary {
+  padding: 14px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  cursor: pointer;
+  user-select: none;
+  background: var(--color-bg-alt);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▸";
+  transition: transform 0.2s;
+}
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+.details-content {
+  padding: 20px;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.details-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+.details-content th,
+.details-content td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.details-content th {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.taas details { border-color: #334155; }
+.taas details[open] { border-color: #60a5fa; }
+.taas summary { background: rgba(255,255,255,0.04); color: #93c5fd; }
+.taas .details-content { color: #94a3b8; }
+.taas .details-content th { color: #e2e8f0; }
+.taas .details-content td { border-color: #334155; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">AAI<span>CLAW</span></a>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#solution">Solution</a></li>
+      <li><a href="#proof">Proof</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#taas">TaaS Vision</a></li>
+      <li><a href="#market">Market</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════ 1. HERO ═══════════════ -->
+<section class="hero" id="hero">
+  <div class="container fade-in">
+    <div class="badge">v0 Validated &mdash; Full Pipeline from Detection to Model Update</div>
+    <h1>Forgery Defense in Hours, Not Days &mdash; With Knowledge That Never Leaves</h1>
+    <p class="sub">AAICLAW is a self-driving, self-learning system that transforms eKYC forgery model defense from a manual, expert-dependent process into a continuously operating virtual team.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">200+</div>
+        <div class="label">Countries Served</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">2000+</div>
+        <div class="label">Potential Models</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">4x</div>
+        <div class="label">Faster Response</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">70%</div>
+        <div class="label">Cost Reduction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 2. PROBLEM ═══════════════ -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">The Challenge</p>
+      <h2 class="section-title">A Problem That Can't Be Solved by Hiring More People</h2>
+      <p class="section-subtitle">At 200+ countries with each potentially requiring 10+ specialized detection models, manual maintenance is not slow &mdash; it is structurally impossible.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card fade-in">
+        <div class="icon red">&#128274;</div>
+        <h3>Expert Dependency</h3>
+        <p>Critical knowledge &mdash; why a threshold is 0.70 and not 0.65, which features work for Flux but not SD3 &mdash; lives in one or two engineers' heads.</p>
+        <div class="stat">When they leave, weeks of re-investigation</div>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="icon orange">&#9889;</div>
+        <h3>Impossible Scale</h3>
+        <p>200+ countries, each needing 1&ndash;10+ specialized models depending on optimization depth. Potentially 2,000+ models to maintain, evolve, and calibrate.</p>
+        <div class="stat">No human team can cover this</div>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="icon purple">&#9203;</div>
+        <h3>Slow Response</h3>
+        <p>3&ndash;7 days to update defense models after a bypass is discovered. Attackers exploit vulnerabilities within hours &mdash; every day of delay is measurable fraud loss.</p>
+        <div class="stat">$10K&ndash;$25K lost per incident during the window</div>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="icon blue">&#128218;</div>
+        <h3>Onboarding Cost</h3>
+        <p>Training a new algorithm engineer to production readiness takes 3&ndash;6 months. During ramp-up, they make avoidable mistakes a veteran would catch instantly.</p>
+        <div class="stat">3&ndash;6 months before productive</div>
+      </div>
+    </div>
+    <details class="fade-in">
+      <summary>Why this is fundamentally different from typical automation</summary>
+      <div class="details-content">
+        <p>The bottleneck is not execution speed &mdash; it is <strong>decision quality</strong>. Deciding which sub-model to retrain, what data to collect, how to adjust thresholds, and why an approach failed requires institutional knowledge accumulated over months. Scripts can automate execution, but they cannot automate the expert judgment that makes each pipeline run successful. This is the gap AAICLAW fills.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 3. SOLUTION ═══════════════ -->
+<section class="solution" id="solution">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">What We Built</p>
+      <h2 class="section-title">A Self-Driving Virtual Team, Not a Script Runner</h2>
+      <p class="section-subtitle">AAICLAW continuously monitors production traffic, detects emerging threats, proposes defense strategies citing past experience, and executes &mdash; with humans approving at critical gates.</p>
+    </div>
+
+    <table class="comparison-table fade-in">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Before (Manual)</th>
+          <th>After (AAICLAW)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Who detects issues</td>
+          <td class="before">Wait for bypass reports or alerts</td>
+          <td class="after">Continuous monitoring, proactive anomaly detection</td>
+        </tr>
+        <tr>
+          <td>Who analyzes</td>
+          <td class="before">Senior engineer, 1&ndash;2 hours</td>
+          <td class="after">AI + Experience Memory, minutes</td>
+        </tr>
+        <tr>
+          <td>Who decides strategy</td>
+          <td class="before">Engineer from memory</td>
+          <td class="after">AI proposes citing past runs, human approves</td>
+        </tr>
+        <tr>
+          <td>Who executes</td>
+          <td class="before">Manual scripts, 3&ndash;7 days</td>
+          <td class="after">Automated with retry and circuit breakers</td>
+        </tr>
+        <tr>
+          <td>Where knowledge lives</td>
+          <td class="before">Engineer's head, scattered docs</td>
+          <td class="after">Structured Experience Memory, persistent and queryable</td>
+        </tr>
+        <tr>
+          <td>Onboarding a new person</td>
+          <td class="before">3&ndash;6 months shadowing</td>
+          <td class="after">Days &mdash; the system explains its own reasoning</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="workflow-diagram fade-in">
+      <h3>Self-Driving Closed-Loop Pipeline</h3>
+      <p class="workflow-note">Not triggered by alerts alone &mdash; driven by continuous production data analysis across 200+ countries.</p>
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <div class="step-icon">&#127758;</div>
+          <div class="step-label">Production Traffic</div>
+          <div class="step-desc">200+ countries, live data</div>
+        </div>
+        <div class="workflow-arrow">&rarr;</div>
+        <div class="workflow-step">
+          <div class="step-icon">&#128269;</div>
+          <div class="step-label">Monitoring</div>
+          <div class="step-desc">Drift, anomaly, performance tracking</div>
+        </div>
+        <div class="workflow-arrow">&rarr;</div>
+        <div class="workflow-step">
+          <div class="step-icon">&#129504;</div>
+          <div class="step-label">AI Analysis</div>
+          <div class="step-desc">Strategy from past experience</div>
+        </div>
+        <div class="workflow-arrow">&rarr;</div>
+        <div class="workflow-step">
+          <div class="step-icon">&#9881;</div>
+          <div class="step-label">Execution</div>
+          <div class="step-desc">Data, training, evaluation</div>
+        </div>
+        <div class="workflow-arrow">&rarr;</div>
+        <div class="workflow-step">
+          <div class="step-icon">&#128101;</div>
+          <div class="step-label">Human Gate</div>
+          <div class="step-desc">Approve, edit, or reject</div>
+        </div>
+        <div class="workflow-arrow">&rarr;</div>
+        <div class="workflow-step">
+          <div class="step-icon">&#128640;</div>
+          <div class="step-label">Deploy</div>
+          <div class="step-desc">Updated model live</div>
+        </div>
+      </div>
+      <div class="workflow-loop">&#8635; Feedback loop &mdash; knowledge captured, monitoring continues</div>
+    </div>
+
+    <details class="fade-in">
+      <summary>System architecture: 7 agents, 12 skill modules</summary>
+      <div class="details-content">
+        <table>
+          <thead>
+            <tr><th>Agent</th><th>Role</th><th>Phase</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Data Miner</td><td>ODPS/OSS data collection, face detection filtering, alert parsing</td><td>Phase 1</td></tr>
+            <tr><td>Researcher</td><td>Task decomposition, dataset preparation, strategy proposal</td><td>Phase 2</td></tr>
+            <tr><td>Forgery Model Trainer</td><td>End-to-end model training lifecycle</td><td>Phase 2</td></tr>
+            <tr><td>GPU Manager</td><td>Training execution, resource monitoring</td><td>Phase 2</td></tr>
+            <tr><td>Evaluator</td><td>LightGBM ensembler, threshold calibration, benchmarking</td><td>Phase 3</td></tr>
+            <tr><td>Gate Assistant</td><td>Label review, gate reporting, structured summaries</td><td>Gates</td></tr>
+            <tr><td>Integrator</td><td>Triton deployment, service config, release logging</td><td>Release</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:16px;">Each agent operates with bounded context, communicates via structured messages in Lark, and follows safety protocols with escalation to humans on uncertainty.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 4. PROOF ═══════════════ -->
+<section class="proof" id="proof">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">Proof of Concept</p>
+      <h2 class="section-title">We Didn't Just Design It. We Built It and Ran It.</h2>
+      <p class="section-subtitle">v0 has been deployed to production infrastructure and validated on real attack data.</p>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-card fade-in">
+        <h3>System Built</h3>
+        <ul>
+          <li>7 specialized AI agents operational</li>
+          <li>12 skill modules (data collection, training, evaluation, deployment)</li>
+          <li>Deployed on K8s with GPU access (DGX1)</li>
+          <li>Lark group integration for human-agent communication</li>
+          <li>Full audit trail (actions.jsonl, structured logging)</li>
+        </ul>
+      </div>
+      <div class="proof-card fade-in">
+        <h3>Pipeline Validated</h3>
+        <ul>
+          <li>Full cycle: alert &rarr; data mining &rarr; model training &rarr; evaluation</li>
+          <li>ODPS data extraction and image download automated</li>
+          <li>GenAI detection model fine-tuning executed end-to-end</li>
+          <li>Before/after comparison reports auto-generated</li>
+          <li>Human gate review workflow operational</li>
+        </ul>
+      </div>
+      <div class="proof-highlight fade-in">
+        <h3>Real Result: GenAI Detection on Live Attack Samples</h3>
+        <div class="result-row">
+          <div>
+            <div class="result-num before-num">9.3%</div>
+            <div style="color:#94a3b8;font-size:0.82rem;margin-top:4px;">Baseline accuracy</div>
+          </div>
+          <div class="result-arrow">&rarr;</div>
+          <div>
+            <div class="result-num after-num">69.8%</div>
+            <div style="color:#94a3b8;font-size:0.82rem;margin-top:4px;">After first pipeline run</div>
+          </div>
+        </div>
+        <p class="result-context">Tested on 91 real attack/alert images (alert_20260310). Baseline model had severe bias toward false positives. After one automated pipeline cycle &mdash; data mining, fine-tuning, evaluation &mdash; valid-class accuracy jumped from 1/78 to 59/78 correct. This is a first iteration; subsequent runs with experience accumulation will further improve attack-class recall.</p>
+      </div>
+    </div>
+    <details class="fade-in">
+      <summary>Detailed test results and next iteration plan</summary>
+      <div class="details-content">
+        <table>
+          <thead><tr><th>Metric</th><th>Baseline</th><th>Fine-tuned</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>Overall Accuracy</td><td>9.3%</td><td>69.8%</td><td>+60.5 pp</td></tr>
+            <tr><td>Valid Correct</td><td>1/78</td><td>59/78</td><td>+74.4 pp</td></tr>
+            <tr><td>Attack Correct</td><td>7/8</td><td>1/8</td><td>-75.0 pp</td></tr>
+            <tr><td>Predictions Changed</td><td>&mdash;</td><td>64</td><td>58 improved, 6 regressed</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:16px;"><strong>Next iteration focus:</strong> Increase attack-class sample weight, collect more edited/fake_card samples, optimize decision boundary. The compound learning effect means each iteration starts from a better baseline.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 5. IMPACT ═══════════════ -->
+<section class="impact" id="impact">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">Impact</p>
+      <h2 class="section-title">The Numbers That Matter</h2>
+    </div>
+    <div class="impact-grid fade-in">
+      <div class="impact-stat">
+        <div class="num">200<span class="num-suffix">+</span></div>
+        <div class="label">Countries covered by a single system</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num">2000<span class="num-suffix">+</span></div>
+        <div class="label">Potential models manageable</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num">4<span class="num-suffix">x</span></div>
+        <div class="label">Faster attack response</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num">70<span class="num-suffix">%</span></div>
+        <div class="label">Operating cost reduction</div>
+      </div>
+      <div class="impact-stat">
+        <div class="num">0</div>
+        <div class="label">Knowledge lost when staff changes</div>
+      </div>
+    </div>
+
+    <details class="fade-in">
+      <summary>Detailed cost comparison</summary>
+      <div class="details-content">
+        <table>
+          <thead>
+            <tr><th></th><th>Traditional (In-house Team)</th><th>AAICLAW</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Annual team cost</td><td>$200&ndash;250K (2 specialists)</td><td>$55&ndash;75K (1 operator + LLM API)</td></tr>
+            <tr><td>Response time</td><td>3&ndash;7 days</td><td>0.5&ndash;1.5 days</td></tr>
+            <tr><td>Knowledge retention</td><td>Walks out the door</td><td>Permanent Experience Memory</td></tr>
+            <tr><td>New hire ramp-up</td><td>3&ndash;6 months</td><td>Days (system explains itself)</td></tr>
+            <tr><td>Coverage</td><td>Limited by headcount</td><td>200+ countries, 2000+ models</td></tr>
+            <tr><td>Fraud loss during window</td><td>$15K&ndash;$35K per incident</td><td>$2.5K&ndash;$7.5K per incident</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 6. COMPOUND EFFECT ═══════════════ -->
+<section class="compound" id="compound">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">Compound Value</p>
+      <h2 class="section-title">It Gets Smarter Every Time It Runs</h2>
+      <p class="section-subtitle">Unlike traditional automation, AAICLAW accumulates institutional knowledge. Each pipeline run &mdash; and each human correction &mdash; makes the next run faster and more accurate.</p>
+    </div>
+
+    <div class="compound-content fade-in">
+      <div class="curve-container">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid lines -->
+          <line x1="60" y1="40" x2="60" y2="260" stroke="#e5e7eb" stroke-width="1"/>
+          <line x1="60" y1="260" x2="380" y2="260" stroke="#e5e7eb" stroke-width="1"/>
+          <line x1="60" y1="200" x2="380" y2="200" stroke="#e5e7eb" stroke-width="0.5" stroke-dasharray="4"/>
+          <line x1="60" y1="140" x2="380" y2="140" stroke="#e5e7eb" stroke-width="0.5" stroke-dasharray="4"/>
+          <line x1="60" y1="80" x2="380" y2="80" stroke="#e5e7eb" stroke-width="0.5" stroke-dasharray="4"/>
+
+          <!-- Y axis labels -->
+          <text x="54" y="264" text-anchor="end" font-size="11" fill="#94a3b8">0%</text>
+          <text x="54" y="204" text-anchor="end" font-size="11" fill="#94a3b8">30%</text>
+          <text x="54" y="144" text-anchor="end" font-size="11" fill="#94a3b8">60%</text>
+          <text x="54" y="84" text-anchor="end" font-size="11" fill="#94a3b8">80%</text>
+
+          <!-- X axis labels -->
+          <text x="60" y="280" text-anchor="middle" font-size="10" fill="#94a3b8">0</text>
+          <text x="140" y="280" text-anchor="middle" font-size="10" fill="#94a3b8">5</text>
+          <text x="240" y="280" text-anchor="middle" font-size="10" fill="#94a3b8">15</text>
+          <text x="370" y="280" text-anchor="middle" font-size="10" fill="#94a3b8">25+</text>
+
+          <!-- Axis titles -->
+          <text x="220" y="296" text-anchor="middle" font-size="11" fill="#64748b" font-weight="600">Pipeline Runs</text>
+          <text x="16" y="150" text-anchor="middle" font-size="11" fill="#64748b" font-weight="600" transform="rotate(-90, 16, 150)">Time Saved</text>
+
+          <!-- Gradient fill under curve -->
+          <defs>
+            <linearGradient id="curveGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2563eb" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#2563eb" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <path d="M60,260 C100,255 120,220 140,200 C180,170 210,150 240,140 C280,125 320,100 370,85 L370,260 Z" fill="url(#curveGrad)"/>
+
+          <!-- Curve -->
+          <path d="M60,260 C100,255 120,220 140,200 C180,170 210,150 240,140 C280,125 320,100 370,85" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Data points -->
+          <circle cx="140" cy="200" r="5" fill="#2563eb"/>
+          <circle cx="240" cy="140" r="5" fill="#2563eb"/>
+          <circle cx="370" cy="85" r="5" fill="#2563eb"/>
+
+          <!-- Phase labels -->
+          <text x="100" y="232" text-anchor="middle" font-size="9" fill="#93c5fd" font-weight="600">Cold Start</text>
+          <text x="190" y="165" text-anchor="middle" font-size="9" fill="#60a5fa" font-weight="600">Accumulation</text>
+          <text x="330" y="75" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">Expert</text>
+        </svg>
+      </div>
+
+      <div class="compound-stages">
+        <div class="stage s1">
+          <div class="stage-header">
+            <span class="stage-title">Run 1&ndash;5: Cold Start</span>
+            <span class="stage-pct">~30% time saved</span>
+          </div>
+          <p class="stage-desc">The virtual team follows general best practices. Humans correct frequently. But every correction is captured as a permanent experience entry.</p>
+        </div>
+        <div class="stage s2">
+          <div class="stage-header">
+            <span class="stage-title">Run 5&ndash;15: Accumulation</span>
+            <span class="stage-pct">~60% time saved</span>
+          </div>
+          <p class="stage-desc">The system starts making connections: "This alert resembles run-202604. That run succeeded with approach X." Human corrections decrease.</p>
+        </div>
+        <div class="stage s3">
+          <div class="stage-header">
+            <span class="stage-title">Run 15+: Institutional Expert</span>
+            <span class="stage-pct">~80% time saved</span>
+          </div>
+          <p class="stage-desc">Comprehensive knowledge base of attack types, regional quirks, annotation pitfalls, and threshold patterns. A new team member is productive on day one.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="compound-quote fade-in">"Every human correction becomes a permanent lesson. The system never forgets."</p>
+
+    <details class="fade-in">
+      <summary>How Experience Memory works</summary>
+      <div class="details-content">
+        <p>After each pipeline run, a retrospective is written to structured Experience Memory &mdash; what worked, what failed, why, and what to try next time. When a new alert arrives, the AI Researcher queries this memory before proposing a strategy. Over time, the memory becomes a queryable knowledge base covering:</p>
+        <ul style="margin-top:12px;margin-left:20px;">
+          <li>Which approaches work for which attack types</li>
+          <li>Which regions have quirks (template changes, unusual document quality)</li>
+          <li>Common annotation pitfalls and how to detect them</li>
+          <li>Threshold sensitivity patterns per card type</li>
+          <li>Historical annotation team accuracy patterns</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 7. TAAS VISION ═══════════════ -->
+<section class="taas" id="taas">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">The Bigger Vision</p>
+      <h2 class="section-title" style="color:white;">Team as a Service</h2>
+      <p class="section-subtitle">Every organization running eKYC faces this exact problem &mdash; and at 200+ countries, it's unsolvable with humans alone. We solved it for ourselves. Now we can solve it for everyone.</p>
+    </div>
+
+    <div class="options-grid fade-in">
+      <div class="option-card">
+        <div class="x-mark">&times;</div>
+        <h3>Option A: Build In-House</h3>
+        <p>Hire 2&ndash;3 ML engineers who understand both CV and document fraud. Train them for 6+ months. Hope they don't leave.</p>
+        <div class="option-cost">$300&ndash;500K/yr &middot; Slow &middot; Fragile</div>
+      </div>
+      <div class="option-card">
+        <div class="x-mark">&times;</div>
+        <h3>Option B: Outsource to Vendor</h3>
+        <p>Send production data (including PII, face images, ID documents) to the vendor's environment. Receive generic, one-size-fits-all model updates.</p>
+        <div class="option-cost">$200K&ndash;1M/yr &middot; Data leaves &middot; Generic</div>
+      </div>
+      <div class="option-card">
+        <div class="x-mark">&times;</div>
+        <h3>Option C: Do Nothing</h3>
+        <p>Accept the fraud losses and hope regulators don't notice. Spoiler: they always notice.</p>
+        <div class="option-cost">Untenable &middot; Regulatory risk</div>
+      </div>
+    </div>
+
+    <div class="taas-solution fade-in">
+      <h3>Option D: AAICLAW</h3>
+      <p class="tagline">Ship Expertise, Not Data</p>
+      <p style="color:#cbd5e1;font-size:0.95rem;line-height:1.7;max-width:680px;">Deploy a virtual expert team into the customer's private infrastructure. It monitors their traffic, detects attacks, proposes strategies, executes training pipelines, and learns from their specific data &mdash; all without any data leaving their perimeter.</p>
+
+      <div class="taas-pillars">
+        <div class="taas-pillar">
+          <h4>Your Data Never Leaves</h4>
+          <p>Training happens on the customer's GPU, with their data. LLM calls contain only metadata and statistics, never raw images or PII. Meets data residency requirements globally.</p>
+        </div>
+        <div class="taas-pillar">
+          <h4>Deeply Customizable</h4>
+          <p>Not a one-size-fits-all model. Customers define their countries, document types, risk thresholds, and data sources. The system adapts to their specific scale and depth of optimization.</p>
+        </div>
+        <div class="taas-pillar">
+          <h4>Self-Driving, Not Tool-Triggered</h4>
+          <p>Autonomously monitors production traffic, detects emerging attacks, proposes defense strategies, and executes. A non-specialist operator reviews and approves at gates.</p>
+        </div>
+        <div class="taas-pillar">
+          <h4>Knowledge That Compounds</h4>
+          <p>After 6 months, the system is an expert on the customer's specific traffic patterns, regional quirks, and attack signatures. Switching means starting from zero.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="taas-contrast fade-in">
+      <div class="contrast-box traditional">
+        <h4>Traditional Vendor</h4>
+        <ul>
+          <li>&times;&nbsp; Customer sends data to vendor's cloud</li>
+          <li>&times;&nbsp; Vendor trains on customer data behind closed doors</li>
+          <li>&times;&nbsp; Returns a model binary &mdash; no visibility</li>
+          <li>&times;&nbsp; Generic updates, not tuned to customer's traffic</li>
+          <li>&times;&nbsp; Data crosses compliance boundaries</li>
+        </ul>
+      </div>
+      <div class="contrast-box aaiclaw-way">
+        <h4>AAICLAW TaaS</h4>
+        <ul>
+          <li>&#10003;&nbsp; Virtual team deploys inside customer's perimeter</li>
+          <li>&#10003;&nbsp; Training runs on customer's own GPU and data</li>
+          <li>&#10003;&nbsp; Every decision logged with full reasoning &mdash; customer owns the audit trail</li>
+          <li>&#10003;&nbsp; Deep optimization for customer's specific scenarios</li>
+          <li>&#10003;&nbsp; Full compliance &mdash; Indonesia OJK, Thailand BoT, India RBI, EU AI Act</li>
+        </ul>
+      </div>
+    </div>
+
+    <details class="fade-in">
+      <summary>What the customer's operations team sees</summary>
+      <div class="details-content" style="color:#94a3b8;">
+        <p>A non-specialist operations person can run the pipeline. They don't need to understand ConvNeXt architectures or threshold calibration theory.</p>
+        <p style="margin-top:12px;"><strong style="color:#e2e8f0;">Trigger a run:</strong></p>
+        <pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:6px;margin-top:8px;font-size:0.82rem;color:#93c5fd;overflow-x:auto;font-family:var(--font-mono);">aaiclaw run --country PH --version v2.1</pre>
+        <p style="margin-top:16px;"><strong style="color:#e2e8f0;">Review a gate:</strong></p>
+        <pre style="background:rgba(0,0,0,0.3);padding:12px;border-radius:6px;margin-top:8px;font-size:0.82rem;color:#93c5fd;overflow-x:auto;font-family:var(--font-mono);">GATE 2: Training Review
+Model F1: 0.87 (target: 0.85) ✓
+FAR: 0.03 (within tolerance) ✓
+
+LLM Analysis:
+"Model meets targets. 12 annotation errors corrected.
+ No remaining systematic mislabeling detected."
+
+Recommendation: APPROVE
+
+[approve]  [reject with feedback]  [edit parameters]</pre>
+        <p style="margin-top:16px;">The AI handles the cognitive heavy lifting. The operator is a quality gate, not a domain expert. This is what makes TaaS commercially scalable.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 8. MARKET ═══════════════ -->
+<section class="market" id="market">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">Market Opportunity</p>
+      <h2 class="section-title">A $23&ndash;45M Addressable Market</h2>
+      <p class="section-subtitle">Every organization running eKYC needs forgery defense model updates. Most solve it worse than we do &mdash; and pay far more.</p>
+    </div>
+
+    <div class="market-highlights fade-in">
+      <div class="market-highlight">
+        <div class="num">220&ndash;420</div>
+        <div class="label">Potential customers globally</div>
+      </div>
+      <div class="market-highlight">
+        <div class="num">$100K</div>
+        <div class="label">Average deal size / year</div>
+      </div>
+      <div class="market-highlight">
+        <div class="num">$1M</div>
+        <div class="label">ARR achievable in 12&ndash;18 months</div>
+      </div>
+      <div class="market-highlight">
+        <div class="num">1/5</div>
+        <div class="label">Cost vs. building an in-house team</div>
+      </div>
+    </div>
+
+    <div class="moats fade-in">
+      <div class="moat">
+        <h4>Experience Memory Lock-In</h4>
+        <p>After 6 months, each customer's AAICLAW instance has accumulated 10&ndash;20+ structured experience entries specific to their traffic patterns, document types, and regional quirks. Switching to a competitor means losing all accumulated knowledge.</p>
+      </div>
+      <div class="moat">
+        <h4>Cross-Customer Network Effect</h4>
+        <p>With customer consent, anonymized insights (not data, not models &mdash; just patterns like "DWT features effective for Flux attacks") are aggregated into Experience Seed Packs. Each customer makes every other customer's system smarter.</p>
+      </div>
+      <div class="moat">
+        <h4>Regulatory Tailwind</h4>
+        <p>Data residency regulations are tightening globally (Indonesia PDP Law, India DPDP Act, EU AI Act). Every new regulation makes traditional "send us your data" vendors less viable and makes AAICLAW's on-premise model more attractive.</p>
+      </div>
+    </div>
+
+    <details class="fade-in">
+      <summary>Market segments and pricing model</summary>
+      <div class="details-content">
+        <table>
+          <thead><tr><th>Segment</th><th>Potential Customers</th><th>Avg Deal Size</th></tr></thead>
+          <tbody>
+            <tr><td>Tier-1 Banks (SEA + LATAM + MENA)</td><td>50&ndash;100</td><td>$150K/yr</td></tr>
+            <tr><td>Digital Banks &amp; Neobanks</td><td>100&ndash;200</td><td>$80K/yr</td></tr>
+            <tr><td>Crypto Exchanges (Top 50)</td><td>30&ndash;50</td><td>$100K/yr</td></tr>
+            <tr><td>Payment Processors</td><td>30&ndash;50</td><td>$100K/yr</td></tr>
+            <tr><td>eKYC/IDV Vendors (White-label)</td><td>10&ndash;20</td><td>$200K/yr</td></tr>
+          </tbody>
+        </table>
+        <table style="margin-top:24px;">
+          <thead><tr><th>Tier</th><th>What Customer Gets</th><th>Pricing</th></tr></thead>
+          <tbody>
+            <tr><td>Platform License</td><td>Core system, CLI, standard skills, LLM integration, Experience Memory</td><td>$50&ndash;100K/yr</td></tr>
+            <tr><td>Skill Modules</td><td>Pre-built skills for specific sub-model types</td><td>$10&ndash;20K per module</td></tr>
+            <tr><td>Custom Integration</td><td>Adapters for customer's infrastructure</td><td>$20&ndash;50K one-time</td></tr>
+            <tr><td>Managed Service</td><td>Remote monitoring, workflow optimization, new skill modules</td><td>$5&ndash;10K/month</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════ 9. ROADMAP ═══════════════ -->
+<section class="roadmap" id="roadmap">
+  <div class="container">
+    <div class="fade-in">
+      <p class="section-label">Roadmap &amp; Investment</p>
+      <h2 class="section-title">From Validation to First Revenue in 6 Months</h2>
+      <p class="section-subtitle">Each phase has a clear go/no-go gate. We don't invest in Phase 2 until Phase 1 proves the thesis. We don't invest in productization until Phase 2 proves production readiness.</p>
+    </div>
+
+    <div class="timeline fade-in">
+      <div class="timeline-item done">
+        <div class="timeline-dot">&#10003;</div>
+        <div class="timeline-body">
+          <h3>Phase 1: Validate Thesis &mdash; Done</h3>
+          <div class="meta">4 weeks &middot; ~$20K engineering cost</div>
+          <p>Built 7 agents, 12 skill modules. Deployed on K8s. Ran full pipeline on real attack data. GenAI detection: 9.3% &rarr; 69.8%. Thesis validated: the system works.</p>
+        </div>
+      </div>
+      <div class="timeline-item next">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-body">
+          <h3>Phase 2: Production System</h3>
+          <div class="meta">8 weeks &middot; ~$40K engineering cost</div>
+          <p>Run on our own production traffic. Accumulate 3+ months of Experience Memory. Measure time savings vs manual baseline. Prove production readiness and ROI.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-body">
+          <h3>Phase 3: First External Customer</h3>
+          <div class="meta">12 weeks &middot; ~$60K engineering cost</div>
+          <p>Helm chart / Docker Compose packaging. Multi-tenant isolation. Pluggable LLM backend. Customer-facing documentation and onboarding. First pilot customer live. Pricing validated.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="investment-summary fade-in">
+      <div class="invest-item">
+        <div class="num">$120K</div>
+        <div class="label">Total investment to first revenue</div>
+      </div>
+      <div class="invest-item">
+        <div class="num">6 months</div>
+        <div class="label">Timeline to first external customer</div>
+      </div>
+      <div class="invest-item">
+        <div class="num">$23&ndash;45M</div>
+        <div class="label">Total addressable market per year</div>
+      </div>
+      <div class="invest-item">
+        <div class="num">$1M ARR</div>
+        <div class="label">Achievable within 12&ndash;18 months</div>
+      </div>
+    </div>
+
+    <div class="risk-note fade-in">
+      <strong>Risk is capped, upside is not.</strong> If the LLM analysis quality is poor, the automation layer alone still delivers ~40% of total value. If Experience Memory doesn't improve over time, each run is still faster than manual. The downside is "we built a good automation tool." The upside is "we built a self-learning system that becomes a product addressing a $23&ndash;45M market."
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 10. FOOTER ═══════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <h2>From Internal Tool to Industry Solution</h2>
+    <p>AAICLAW &mdash; a virtual expert team that ships expertise to private data, turning eKYC forgery defense from a headcount problem into a software product with compounding intelligence.</p>
+    <div class="footer-line">AAICLAW &middot; Team as a Service &middot; 2026</div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  // Scroll-triggered fade-in
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // Nav shadow on scroll
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 10) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
