@@ -1,0 +1,2553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVANCE.AI · 身份风险 AI 顾问系统 — 东南亚孵化项目方案</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.65;
+            color: #1a1a2e;
+            background: #f7f8fc;
+        }
+
+        /* ── NAV ── */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e0e0ef;
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            font-size: 0.85em;
+        }
+        .nav a { color: #5a5a8a; text-decoration: none; white-space: nowrap; }
+        .nav a:hover { color: #3a3a9a; }
+        .nav .brand { font-weight: 700; color: #1a1a6e; font-size: 1em; margin-right: auto; }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            text-align: center;
+            padding: 80px 40px 60px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 0.8em;
+            margin-bottom: 22px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .hero h1 { font-size: 2.8em; font-weight: 800; margin-bottom: 16px; }
+        .hero .sub { font-size: 1.15em; opacity: 0.75; margin-bottom: 30px; }
+        .hero-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+        .hero-stat { text-align: center; }
+        .hero-stat .val { font-size: 2em; font-weight: 700; }
+        .hero-stat .lbl { font-size: 0.78em; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ── LAYOUT ── */
+        .page { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+
+        section { margin: 56px 0; }
+
+        h2 {
+            font-size: 1.65em;
+            font-weight: 700;
+            color: #1a1a6e;
+            margin-bottom: 24px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8e8f8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h3 { font-size: 1.2em; color: #2a2a5e; margin: 28px 0 14px; font-weight: 600; }
+
+        p { margin-bottom: 14px; color: #3a3a5a; }
+
+        /* ── EXEC SUMMARY ── */
+        .exec-box {
+            background: linear-gradient(135deg, #e8eaf6, #ede7f6);
+            border-left: 5px solid #5c6bc0;
+            border-radius: 8px;
+            padding: 28px 32px;
+            margin: 32px 0;
+        }
+        .exec-box h3 { margin-top: 0; color: #3949ab; }
+
+        /* ── COUNTRY CARDS ── */
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 22px;
+            margin: 28px 0;
+        }
+        .country-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            border-top: 5px solid;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .country-card.vn { border-color: #d32f2f; }
+        .country-card.my { border-color: #1976d2; }
+        .country-card.id { border-color: #388e3c; }
+        .country-card.th { border-color: #f57c00; }
+        .country-card.sg { border-color: #7b1fa2; }
+        .country-card.ph { border-color: #0097a7; }
+
+        .country-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .flag { font-size: 2em; }
+        .country-name { font-size: 1.1em; font-weight: 700; color: #1a1a2e; }
+        .priority-badge {
+            margin-left: auto;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.73em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .p1 { background: #ffebee; color: #c62828; }
+        .p2 { background: #e3f2fd; color: #1565c0; }
+        .p3 { background: #e8f5e9; color: #2e7d32; }
+        .p4 { background: #fafafa; color: #555; }
+
+        .country-body { font-size: 0.88em; color: #555; }
+        .country-body li { margin: 6px 0; list-style: none; padding-left: 0; }
+        .country-body li::before { content: ''; }
+
+        .reg-item {
+            background: #f5f5f5;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 6px 0;
+            font-size: 0.85em;
+        }
+        .reg-item strong { color: #1a1a6e; }
+
+        .friendly-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            font-size: 0.82em;
+        }
+        .bar-track {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #66bb6a, #43a047);
+        }
+
+        /* ── TABLE ── */
+        table { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.9em; }
+        th {
+            background: #3949ab;
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td { padding: 12px 14px; border-bottom: 1px solid #e8e8f4; }
+        tr:hover { background: #f8f8ff; }
+        tr:nth-child(even) { background: #fafafa; }
+        tr:nth-child(even):hover { background: #f3f3ff; }
+
+        /* ── PHASE CARDS ── */
+        .phase-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
+            margin: 28px 0;
+        }
+        .phase-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            border-left: 5px solid;
+            position: relative;
+        }
+        .phase-card.ph1 { border-color: #5c6bc0; }
+        .phase-card.ph2 { border-color: #00897b; }
+        .phase-card.ph3 { border-color: #f57c00; }
+
+        .phase-num {
+            position: absolute;
+            top: -12px;
+            left: 18px;
+            background: #1a1a6e;
+            color: white;
+            font-size: 0.72em;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+        .phase-title { font-weight: 700; font-size: 1.05em; color: #1a1a2e; margin-bottom: 10px; margin-top: 8px; }
+        .phase-period { font-size: 0.82em; color: #888; margin-bottom: 14px; }
+        .phase-items { font-size: 0.88em; color: #444; }
+        .phase-items li { margin: 8px 0; padding-left: 20px; position: relative; }
+        .phase-items li::before { content: '▸'; position: absolute; left: 0; color: #5c6bc0; }
+        .phase-kpi {
+            margin-top: 16px;
+            background: #f0f4ff;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 0.83em;
+        }
+        .phase-kpi strong { color: #3949ab; }
+
+        /* ── VENDOR COMPARISON ── */
+        .vendor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+        .vendor-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        }
+        .vendor-name { font-weight: 700; font-size: 1em; color: #1a1a2e; margin-bottom: 4px; }
+        .vendor-origin { font-size: 0.78em; color: #888; margin-bottom: 12px; }
+        .vendor-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.73em;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .tag-saas { background: #fff3e0; color: #e65100; }
+        .tag-local { background: #e8f5e9; color: #2e7d32; }
+        .tag-onprem { background: #e3f2fd; color: #1565c0; }
+        .tag-hybrid { background: #f3e5f5; color: #6a1b9a; }
+
+        .vs-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-weight: 700;
+        }
+        .vs-compete { background: #ffebee; color: #c62828; }
+        .vs-partner { background: #e8f5e9; color: #2e7d32; }
+        .vs-neutral { background: #fff3e0; color: #e65100; }
+
+        /* ── TIMELINE ── */
+        .timeline {
+            position: relative;
+            padding: 10px 0;
+        }
+        .tl-item {
+            display: flex;
+            gap: 22px;
+            margin-bottom: 28px;
+            align-items: flex-start;
+        }
+        .tl-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3949ab;
+            color: white;
+            font-size: 0.8em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .tl-content {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 18px 22px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+        }
+        .tl-date { font-size: 0.8em; color: #5c6bc0; font-weight: 600; margin-bottom: 6px; }
+        .tl-title { font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+        .tl-items { font-size: 0.88em; color: #555; }
+        .tl-items li { margin: 5px 0; }
+
+        /* ── CERT CHECKLIST ── */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .cert-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+            border-left: 4px solid;
+        }
+        .cert-required { border-color: #d32f2f; }
+        .cert-critical { border-color: #f57c00; }
+        .cert-expected { border-color: #1976d2; }
+        .cert-name { font-weight: 700; font-size: 1em; color: #1a1a2e; }
+        .cert-level { font-size: 0.75em; font-weight: 700; margin-bottom: 8px; display: inline-block; padding: 2px 8px; border-radius: 8px; }
+        .cl-req { background: #ffebee; color: #c62828; }
+        .cl-crit { background: #fff3e0; color: #e65100; }
+        .cl-exp { background: #e3f2fd; color: #1565c0; }
+        .cert-meta { font-size: 0.82em; color: #666; margin-top: 6px; }
+
+        /* ── INSIGHT BOXES ── */
+        .insight {
+            background: #e8f5e9;
+            border-left: 4px solid #43a047;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            font-size: 0.92em;
+        }
+        .insight strong { color: #2e7d32; }
+
+        .warning {
+            background: #fff8e1;
+            border-left: 4px solid #ffb300;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            font-size: 0.92em;
+        }
+        .warning strong { color: #e65100; }
+
+        /* ── KPI TABLE ── */
+        .kpi-row { background: #f0f4ff; }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+            font-size: 0.85em;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        ul { margin-left: 18px; margin-bottom: 12px; }
+        li { margin: 5px 0; color: #444; }
+
+        /* ── SCENARIO CARDS ── */
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+            margin: 28px 0;
+        }
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            padding: 26px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-top: 5px solid;
+            text-align: center;
+        }
+        .scenario-card.conservative { border-color: #90a4ae; }
+        .scenario-card.mid { border-color: #5c6bc0; }
+        .scenario-card.bull { border-color: #f57c00; }
+        .scenario-label {
+            font-size: 0.72em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .conservative .scenario-label { color: #607d8b; }
+        .mid .scenario-label { color: #3949ab; }
+        .bull .scenario-label { color: #e65100; }
+        .scenario-title { font-size: 1.05em; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; }
+        .scenario-revenue {
+            font-size: 2.2em;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .conservative .scenario-revenue { color: #607d8b; }
+        .mid .scenario-revenue { color: #3949ab; }
+        .bull .scenario-revenue { color: #e65100; }
+        .scenario-period { font-size: 0.78em; color: #999; margin-bottom: 16px; }
+        .scenario-items { font-size: 0.84em; color: #555; text-align: left; }
+        .scenario-items li { margin: 6px 0; }
+
+        /* ── COST / MARGIN TABLE ── */
+        .margin-bar-row td:last-child { padding: 0 14px; }
+        .margin-bar {
+            height: 22px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 0.78em;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* ── MARKET TIMING ── */
+        .window-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 28px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .window-phase {
+            padding: 22px 16px;
+            text-align: center;
+            color: white;
+        }
+        .wp-ignition { background: #5c6bc0; }
+        .wp-golden  { background: linear-gradient(135deg, #e65100, #f57c00); }
+        .wp-mature  { background: #00897b; }
+        .wp-late    { background: #78909c; }
+        .window-phase .wp-year { font-size: 1em; font-weight: 800; margin-bottom: 4px; }
+        .window-phase .wp-title { font-size: 0.82em; font-weight: 700; margin-bottom: 8px; opacity: 0.95; }
+        .window-phase .wp-desc { font-size: 0.75em; opacity: 0.82; line-height: 1.4; }
+
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+        .signal-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+            border-left: 4px solid;
+        }
+        .signal-card.urgent { border-color: #d32f2f; }
+        .signal-card.rising { border-color: #f57c00; }
+        .signal-card.watch  { border-color: #5c6bc0; }
+        .signal-icon { font-size: 1.6em; margin-bottom: 8px; }
+        .signal-title { font-weight: 700; font-size: 0.95em; color: #1a1a2e; margin-bottom: 6px; }
+        .signal-value { font-size: 1.6em; font-weight: 800; margin-bottom: 4px; }
+        .urgent .signal-value { color: #c62828; }
+        .rising .signal-value { color: #e65100; }
+        .watch  .signal-value { color: #3949ab; }
+        .signal-desc { font-size: 0.82em; color: #666; }
+
+        .reg-timeline {
+            margin: 28px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .reg-row {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            border-bottom: 1px solid #e8e8f4;
+        }
+        .reg-row:last-child { border-bottom: none; }
+        .reg-year {
+            background: #3949ab;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 12px;
+        }
+        .reg-events {
+            background: white;
+            padding: 14px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .reg-pill {
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .rp-hot  { background: #ffebee; color: #c62828; }
+        .rp-warm { background: #fff3e0; color: #e65100; }
+        .rp-blue { background: #e3f2fd; color: #1565c0; }
+        .rp-green{ background: #e8f5e9; color: #2e7d32; }
+
+        .cta-box {
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            color: white;
+            border-radius: 12px;
+            padding: 32px 36px;
+            margin: 32px 0;
+            text-align: center;
+        }
+        .cta-box h3 { color: white; font-size: 1.3em; margin-bottom: 12px; }
+        .cta-box p { color: rgba(255,255,255,0.82); margin-bottom: 0; }
+        .cta-highlight { color: #ffd740; font-weight: 700; }
+
+        /* ── STARTUP ANALYST / CRITIQUE ── */
+        .analyst-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg,#3949ab,#5c6bc0);
+            color: white; border-radius: 20px; padding: 6px 16px;
+            font-size: 0.8em; font-weight: 700; margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin: 24px 0;
+        }
+        .metric-card {
+            background: white; border-radius: 10px; padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-top: 4px solid #5c6bc0; text-align: center;
+        }
+        .metric-card.green { border-color: #43a047; }
+        .metric-card.orange { border-color: #f57c00; }
+        .metric-card.red { border-color: #e53935; }
+        .metric-card.blue { border-color: #1976d2; }
+        .metric-val { font-size: 1.9em; font-weight: 800; color: #1a1a6e; margin-bottom: 4px; }
+        .metric-card.green .metric-val { color: #2e7d32; }
+        .metric-card.orange .metric-val { color: #e65100; }
+        .metric-card.red .metric-val { color: #c62828; }
+        .metric-card.blue .metric-val { color: #1565c0; }
+        .metric-lbl { font-size: 0.78em; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-sub { font-size: 0.75em; color: #aaa; margin-top: 4px; }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; margin: 24px 0;
+        }
+        .model-card {
+            background: white; border-radius: 12px; padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .model-card h4 { font-size: 1em; color: #1a1a2e; margin-bottom: 12px; font-weight: 700; }
+        .model-row { display: flex; justify-content: space-between; align-items: center;
+            padding: 6px 0; border-bottom: 1px solid #f0f0f8; font-size: 0.87em; }
+        .model-row:last-child { border-bottom: none; }
+        .model-row .lbl { color: #666; }
+        .model-row .val { font-weight: 600; color: #1a1a6e; }
+        .model-row .val.good { color: #2e7d32; }
+        .model-row .val.warn { color: #e65100; }
+        .model-row .val.bad  { color: #c62828; }
+
+        .tam-funnel {
+            background: white; border-radius: 12px; padding: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin: 24px 0;
+        }
+        .funnel-row {
+            display: flex; align-items: center; gap: 14px;
+            margin: 10px 0;
+        }
+        .funnel-bar-wrap { flex: 1; background: #f0f0f8; border-radius: 6px; overflow: hidden; }
+        .funnel-bar { height: 36px; border-radius: 6px; display: flex; align-items: center;
+            padding: 0 14px; color: white; font-size: 0.84em; font-weight: 700; }
+        .funnel-lbl { width: 60px; font-size: 0.78em; font-weight: 700; color: #3949ab; text-align: right; }
+        .funnel-desc { font-size: 0.8em; color: #888; min-width: 180px; }
+
+        .scorecard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px; margin: 24px 0;
+        }
+        .score-item {
+            background: white; border-radius: 10px; padding: 18px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+        }
+        .score-dim { font-size: 0.85em; font-weight: 600; color: #555; margin-bottom: 10px; }
+        .score-bar-wrap { background: #f0f0f8; border-radius: 4px; overflow: hidden; height: 10px; margin-bottom: 6px; }
+        .score-bar { height: 100%; border-radius: 4px; }
+        .score-val { font-size: 0.82em; font-weight: 700; color: #1a1a6e; }
+        .score-note { font-size: 0.75em; color: #999; margin-top: 4px; }
+
+        .critique-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px; margin: 24px 0;
+        }
+        .critique-card {
+            background: white; border-radius: 12px; padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-left: 5px solid;
+        }
+        .critique-card.crit-red   { border-color: #e53935; }
+        .critique-card.crit-orange{ border-color: #f57c00; }
+        .critique-card.crit-green { border-color: #43a047; }
+        .critique-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+        .critique-icon { font-size: 1.4em; flex-shrink: 0; margin-top: 2px; }
+        .critique-title { font-weight: 700; font-size: 0.97em; color: #1a1a2e; }
+        .critique-severity { font-size: 0.72em; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-top: 4px; display: inline-block; }
+        .sev-critical { background: #ffebee; color: #c62828; }
+        .sev-moderate { background: #fff3e0; color: #e65100; }
+        .sev-low      { background: #e8f5e9; color: #2e7d32; }
+        .critique-body { font-size: 0.86em; color: #555; line-height: 1.6; }
+        .critique-body li { margin: 5px 0; }
+        .critique-fix {
+            margin-top: 12px; background: #f5f8ff;
+            border-radius: 6px; padding: 10px 14px;
+            font-size: 0.83em; color: #3949ab;
+            border-left: 3px solid #5c6bc0;
+        }
+
+        .assumption-table td:first-child { font-weight: 600; }
+        .check-yes { color: #2e7d32; font-weight: 700; }
+        .check-no  { color: #c62828; font-weight: 700; }
+        .check-warn{ color: #e65100; font-weight: 700; }
+
+        .action-list { counter-reset: action; margin: 24px 0; }
+        .action-item {
+            display: flex; gap: 16px; margin: 14px 0; align-items: flex-start;
+        }
+        .action-num {
+            counter-increment: action;
+            background: #3949ab; color: white; border-radius: 50%;
+            width: 32px; height: 32px; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 0.85em; flex-shrink: 0;
+        }
+        .action-content { flex: 1; }
+        .action-title { font-weight: 700; font-size: 0.95em; color: #1a1a2e; margin-bottom: 4px; }
+        .action-desc { font-size: 0.85em; color: #555; }
+        .action-meta { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+        .action-tag { font-size: 0.72em; padding: 2px 8px; border-radius: 8px; font-weight: 600; }
+        .tag-now  { background: #ffebee; color: #c62828; }
+        .tag-soon { background: #fff3e0; color: #e65100; }
+        .tag-later{ background: #e3f2fd; color: #1565c0; }
+        .tag-usd  { background: #e8f5e9; color: #2e7d32; }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 1.8em; }
+            .nav { padding: 10px 16px; font-size: 0.78em; gap: 14px; }
+            .window-strip { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <span class="brand">ADVANCE.AI · 身份风险 AI 顾问系统</span>
+    <a href="#overview">概览</a>
+    <a href="#product">产品愿景</a>
+    <a href="#countries">六国分析</a>
+    <a href="#certs">认证要求</a>
+    <a href="#vendors">竞品格局</a>
+    <a href="#gtm">GTM 策略</a>
+    <a href="#timeline">路线图</a>
+    <a href="#risks">风险</a>
+    <a href="#roi">收益分析</a>
+    <a href="#window">竞争窗口</a>
+    <a href="#analyst">量化建模</a>
+    <a href="#critique">批判审视</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-badge">ADVANCE.AI 内部孵化项目 · 东南亚市场</div>
+    <h1>身份风险 AI 咨询顾问</h1>
+    <p class="sub">从 eKYC SaaS 到专业风险评估系统 · 本地化部署 · 合规导航 · 反欺诈顾问 · 调查辅助</p>
+    <div class="hero-meta">
+        <div class="hero-stat">
+            <div class="val">500+</div>
+            <div class="lbl">ADVANCE.AI 现有企业客户</div>
+        </div>
+        <div class="hero-stat">
+            <div class="val">3M+</div>
+            <div class="lbl">日均 API 请求</div>
+        </div>
+        <div class="hero-stat">
+            <div class="val">3 国</div>
+            <div class="lbl">强制本地化监管</div>
+        </div>
+        <div class="hero-stat">
+            <div class="val">720%</div>
+            <div class="lbl">深度伪造欺诈飙升（APAC Q3 2025）</div>
+        </div>
+        <div class="hero-stat">
+            <div class="val">Year 1</div>
+            <div class="lbl">盈亏平衡内部目标</div>
+        </div>
+    </div>
+</div>
+
+<div class="page">
+
+<!-- EXEC SUMMARY -->
+<section id="overview">
+    <h2>📌 执行摘要</h2>
+
+    <div class="exec-box">
+        <h3>核心结论：ADVANCE.AI 有独特优势将现有 eKYC SaaS 升维为本地化 AI 咨询顾问系统</h3>
+        <p>
+            <strong>我们是谁：</strong> ADVANCE.AI 是东南亚领先的 eKYC 和数字身份平台，
+            现有 500+ 企业客户、3M+ 日均请求，客户覆盖 BRI、Mandiri、BNI、CIMB Niaga 等头部银行。
+            本项目是一个<strong>内部孵化产品</strong>，依托现有技术、客户关系、销售渠道，
+            将产品能力从"API 验证服务"升级为"本地部署的专业 AI 咨询顾问系统"。
+        </p>
+        <p>
+            <strong>为什么现在：</strong> 越南、马来西亚、印尼强制数据本地化，
+            全球 SaaS 厂商（Jumio、Sumsub）无法满足，
+            而 ADVANCE.AI 已有在地客户关系和技术基础——这是我们内部孵化而非外部创业的核心优势。
+            叠加深度伪造欺诈 +720%、越南 86M 账户冻结，银行的痛点已超出"合规打钩"的层面，
+            需要一个能<strong>真正理解风险、提供专业建议</strong>的系统，而不是另一个 API。
+        </p>
+        <p>
+            <strong>产品定位：</strong> 不是"黑盒评分机器"——而是<strong>专业咨询顾问</strong>：
+            解释每一个风险判断的依据、预测新型欺诈模式、为合规审计提供解读、辅助调查人员建立案件链路。
+        </p>
+        <p>
+            <strong>孵化目标（18 个月）：</strong> 内部 P&amp;L 盈亏平衡，
+            将现有 5-8 家 SaaS 客户转化为本地部署版本，
+            新增增量收入 ¥2-4M/年，同时沉淀可独立对外销售的产品资产。
+        </p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>市场</th>
+                <th>数据本地化</th>
+                <th>生物识别强制</th>
+                <th>一体机友好度</th>
+                <th>进入优先级</th>
+                <th>进入门槛</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>🇻🇳 越南</td>
+                <td>✅ 强制（金融行业）</td>
+                <td>✅ Circular 17/2024<br/>2025/7 生效</td>
+                <td>🟢🟢🟢🟢🟢</td>
+                <td style="color:#c62828; font-weight:700;">P1 最优先</td>
+                <td>需 FPT/VNPT 合作<br/>（Dukcapil 中介）</td>
+            </tr>
+            <tr>
+                <td>🇲🇾 马来西亚</td>
+                <td>✅ BNM 行业强制</td>
+                <td>✅ BNM eKYC 2024<br/>需第三方评估</td>
+                <td>🟢🟢🟢🟢</td>
+                <td style="color:#c62828; font-weight:700;">P1 最优先</td>
+                <td>必须通过 BNM<br/>独立评估（LGMS）</td>
+            </tr>
+            <tr>
+                <td>🇮🇩 印度尼西亚</td>
+                <td>✅ OJK POJK 11/2022<br/>硬性要求</td>
+                <td>✅ 事实强制<br/>(OJK 监管)</td>
+                <td>🟢🟢🟢🟢</td>
+                <td style="color:#1976d2; font-weight:700;">P2</td>
+                <td>需本地合作伙伴<br/>Privy 或 ADVANCE.AI</td>
+            </tr>
+            <tr>
+                <td>🇹🇭 泰国</td>
+                <td>否（账户级跨境）</td>
+                <td>✅ NDID 平台 + BoT<br/>6 家授权银行</td>
+                <td>🟡🟡🟡</td>
+                <td style="color:#388e3c; font-weight:700;">P3</td>
+                <td>需 NDID 平台集成</td>
+            </tr>
+            <tr>
+                <td>🇸🇬 新加坡</td>
+                <td>否（问责制）</td>
+                <td>✅ MAS 允许<br/>（非强制）</td>
+                <td>🟡🟡🟡</td>
+                <td style="color:#388e3c; font-weight:700;">P3</td>
+                <td>严格 due diligence<br/>MAS AI 风险管理</td>
+            </tr>
+            <tr>
+                <td>🇵🇭 菲律宾</td>
+                <td>否</td>
+                <td>✅ BSP 允许<br/>PhilSys</td>
+                <td>🟡🟡</td>
+                <td style="color:#888; font-weight:700;">P4</td>
+                <td>相对低，但市场小</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- PRODUCT VISION -->
+<section id="product">
+    <h2>🎯 产品愿景：从 eKYC API 到专业咨询顾问</h2>
+
+    <div class="exec-box">
+        <h3>为什么不只是"本地化部署的 eKYC API"？</h3>
+        <p>
+            全球已有多家厂商在做本地化：Shufti Pro 有本地部署选项、GoAbacus Go1、第四范式 SageOne。
+            他们都定位为"硬件一体机"或"私有云方案"——本质上还是把 eKYC API 从美国云搬到本地云。
+        </p>
+        <p>
+            <strong>我们的差异：</strong> ADVANCE.AI 的产品不是替换 API，而是<strong>围绕 API 为核心建立一个顾问系统</strong>。
+            银行采购我们，不只是为了合规打钩，而是为了获得一个<strong>能理解业务、能提供建议、能辅助决策的 AI 体系</strong>。
+        </p>
+    </div>
+
+    <h3>四大顾问功能模块</h3>
+    <div class="model-grid">
+        <div class="model-card" style="border-top:5px solid #3949ab;">
+            <h4>1️⃣ 身份风险研判</h4>
+            <div class="model-row"><span class="lbl">核心输出</span><span class="val">Per-case reasoning，不只是分数</span></div>
+            <div class="model-row"><span class="lbl">典型应用</span><span class="val">✓ 为什么判这个人高风险？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ 相比昨天的欺诈案例，这个人的特征是什么？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ 下一步应该审查什么证件或生物特征？</span></div>
+            <div class="model-row"><span class="lbl">区别</span><span class="val">vs Jumio：是一个"顾问"而不是"评分机"</span></div>
+        </div>
+        <div class="model-card" style="border-top:5px solid #1976d2;">
+            <h4>2️⃣ 合规咨询顾问</h4>
+            <div class="model-row"><span class="lbl">核心输出</span><span class="val">法规解读 + 合规缺口诊断</span></div>
+            <div class="model-row"><span class="lbl">典型应用</span><span class="val">✓ Vietnam Circular 17 对我们的影响？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ BNM 今年会检查我们的哪些流程？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ OJK 新政策下，我们需要升级什么？</span></div>
+            <div class="model-row"><span class="lbl">区别</span><span class="val">vs 法务部：是 AI 加速的法规监听 + 智能推荐</span></div>
+        </div>
+        <div class="model-card" style="border-top:5px solid #f57c00;">
+            <h4>3️⃣ 反欺诈策略顾问</h4>
+            <div class="model-row"><span class="lbl">核心输出</span><span class="val">规则优化 + 新型欺诈预警</span></div>
+            <div class="model-row"><span class="lbl">典型应用</span><span class="val">✓ 深度伪造浪潮来临，如何调整检测阈值？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ 新兴的"孪生诈骗"案例，如何在我们的系统中识别？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ 按月/按地区的欺诈风险评分，帮助我们优化营销成本？</span></div>
+            <div class="model-row"><span class="lbl">区别</span><span class="val">vs 传统规则引擎：是数据驱动的 AI 智能建议</span></div>
+        </div>
+        <div class="model-card" style="border-top:5px solid #43a047;">
+            <h4>4️⃣ 调查辅助</h4>
+            <div class="model-row"><span class="lbl">核心输出</span><span class="val">案件链路 + SAR 初稿生成</span></div>
+            <div class="model-row"><span class="lbl">典型应用</span><span class="val">✓ 这个申请人与已知欺诈案例有什么关联？</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ 帮我自动整理证据，用 AML 术语生成初稿 SAR</span></div>
+            <div class="model-row"><span class="val" style="margin-left:0;">✓ 跨支行的模式检测：是否有组织化的欺诈团伙？</span></div>
+            <div class="model-row"><span class="lbl">区别</span><span class="val">vs 人工调查：是调查员的 AI 副手而非替代品</span></div>
+        </div>
+    </div>
+
+    <div class="insight">
+        <strong>💡 产品哲学：</strong>
+        ADVANCE.AI 的现有 eKYC 产品已经很强。这个孵化项目的核心不是替换它，
+        而是在相同的 AI/模型基础上，包装一个<strong>对标专业咨询顾问</strong>的能力面。
+        用户不再是"调用 API 的系统集成商"，而是"使用 AI 顾问的业务决策者"。
+        产品的价值不体现在验证准确率（那我们早就做好了），而体现在<strong>洞察深度、建议相关性、合规理解</strong>。
+    </div>
+</section>
+
+<!-- COUNTRY ANALYSIS -->
+<section id="countries">
+    <h2>🌏 六国监管与市场深度分析</h2>
+
+    <div class="country-grid">
+
+        <!-- Vietnam -->
+        <div class="country-card vn">
+            <div class="country-header">
+                <span class="flag">🇻🇳</span>
+                <div>
+                    <div class="country-name">越南</div>
+                    <div style="font-size:0.78em; color:#888;">State Bank of Vietnam</div>
+                </div>
+                <span class="priority-badge p1">P1 首选</span>
+            </div>
+            <div class="country-body">
+                <div class="reg-item">
+                    <strong>Circular 17/2024/TT-NHNN</strong><br/>
+                    2025/1 全面生效：所有线上交易需生物识别验证。
+                    2026/1：未完成认证账户冻结。
+                </div>
+                <div class="reg-item">
+                    <strong>Circular 50/2024</strong><br/>
+                    2026/7/1 起强制：ISO 30107-3 (PAD) + FIDO 认证必须。
+                </div>
+                <div class="reg-item">
+                    <strong>数据访问：</strong>
+                    Dukcapil 国家数据库通过 VNPT / FPT / Viettel 三家国有中介对接，
+                    外国厂商必须通过这些中介。
+                </div>
+                <div class="reg-item" style="background:#e8f5e9;">
+                    <strong>✓ 市场验证：</strong>
+                    2024/7 以来欺诈率下降 <strong>50%</strong>，100+ 银行已上线，40M 公民已认证。
+                </div>
+                <div class="friendly-bar">
+                    <span>一体机友好度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+                    <span>95%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Malaysia -->
+        <div class="country-card my">
+            <div class="country-header">
+                <span class="flag">🇲🇾</span>
+                <div>
+                    <div class="country-name">马来西亚</div>
+                    <div style="font-size:0.78em; color:#888;">Bank Negara Malaysia (BNM)</div>
+                </div>
+                <span class="priority-badge p1">P1 首选</span>
+            </div>
+            <div class="country-body">
+                <div class="reg-item">
+                    <strong>BNM eKYC Policy Document (2024/4/15)</strong><br/>
+                    三模块强制独立外部评估：<br/>
+                    · ID 验证 (MyKad OCR)<br/>
+                    · 人脸识别 (ISO 19794-5)<br/>
+                    · 活体检测 (ISO 30107-3)
+                </div>
+                <div class="reg-item">
+                    <strong>Jumio 案例 (2026/3)：</strong>
+                    首个通过 BNM 评估（LGMS 机构），<strong>零缺陷</strong>，直接获得 Malaysia 所有银行的销售资格。
+                </div>
+                <div class="reg-item">
+                    <strong>成本：</strong> 评估费 MYR 200-500K (USD 45-110K)，周期 4 个月。
+                </div>
+                <div class="reg-item" style="background:#e3f2fd;">
+                    <strong>✓ 关键：</strong> 评估通过 = 解锁全国 Maybank、CIMB、OCBC、RHB 等所有银行直销资格。
+                </div>
+                <div class="friendly-bar">
+                    <span>一体机友好度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+                    <span>88%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indonesia -->
+        <div class="country-card id">
+            <div class="country-header">
+                <span class="flag">🇮🇩</span>
+                <div>
+                    <div class="country-name">印度尼西亚</div>
+                    <div style="font-size:0.78em; color:#888;">OJK (金融服务管理局)</div>
+                </div>
+                <span class="priority-badge p2">P2</span>
+            </div>
+            <div class="country-body">
+                <div class="reg-item">
+                    <strong>OJK POJK 11/2022</strong><br/>
+                    银行 IT 治理：所有 PII 必须存储在印度尼西亚境内。<br/>
+                    生物特征 = Specific Personal Data (PDP Law 2022)。
+                </div>
+                <div class="reg-item">
+                    <strong>Dukcapil 数据库：</strong>
+                    唯一直接合法对接的通道是通过 Privy、VIDA 等 OJK 沙箱通过的本地厂商。
+                    外国厂商必须与其合作。
+                </div>
+                <div class="reg-item">
+                    <strong>主要本地厂商：</strong><br/>
+                    · ADVANCE.AI (SoftBank 投资，$730M 融资)<br/>
+                    · Privy (KKR，唯一通过 BI 沙箱)<br/>
+                    · VIDA ($47.7M)
+                </div>
+                <div class="reg-item" style="background:#e8f5e9;">
+                    <strong>✓ 策略：</strong> 与 Privy 或 ADVANCE.AI 合作，
+                    提供本地推理层 (你的一体机) + 他们的 API 集成。
+                </div>
+                <div class="friendly-bar">
+                    <span>一体机友好度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+                    <span>85%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thailand -->
+        <div class="country-card th">
+            <div class="country-header">
+                <span class="flag">🇹🇭</span>
+                <div>
+                    <div class="country-name">泰国</div>
+                    <div style="font-size:0.78em; color:#888;">Bank of Thailand (BoT) + NDID</div>
+                </div>
+                <span class="priority-badge p3">P3</span>
+            </div>
+            <div class="country-body">
+                <div class="reg-item">
+                    <strong>NDID 平台 (2018 Digital ID Bill)</strong><br/>
+                    40M 公民登记；6 家授权银行。<br/>
+                    生物识别转账上限：50,000 THB (~$1,580)。
+                </div>
+                <div class="reg-item">
+                    <strong>BoT Biometric Guideline (2023/9)</strong><br/>
+                    ISO/NIST/FIDO 合规要求。
+                </div>
+                <div class="reg-item" style="background:#fff3e0;">
+                    <strong>策略：</strong> 作为 NDID 的认证服务提供商 (ASP)，
+                    向 KBank、SCB、BBL 等 6 家授权银行销售。
+                </div>
+                <div class="friendly-bar">
+                    <span>一体机友好度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:60%; background: linear-gradient(90deg, #ffa726, #fb8c00);"></div></div>
+                    <span>60%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Singapore -->
+        <div class="country-card sg">
+            <div class="country-header">
+                <span class="flag">🇸🇬</span>
+                <div>
+                    <div class="country-name">新加坡</div>
+                    <div style="font-size:0.78em; color:#888;">MAS + PDPA</div>
+                </div>
+                <span class="priority-badge p3">P3</span>
+            </div>
+            <div class="country-body">
+                <div class="reg-item">
+                    <strong>MAS Notice 626 (2022/3 + 2025/6)</strong><br/>
+                    反洗钱核心框架，问责制（不强制本地化）。<br/>
+                    AI 风险管理指南 (2025)：FI 对第三方 AI 完全负责。
+                </div>
+                <div class="reg-item">
+                    <strong>Singpass / MyInfo：</strong><br/>
+                    97% 公民使用率。使用 MyInfo = FI 无需额外证件。
+                </div>
+                <div class="reg-item" style="background:#f3e5f5;">
+                    <strong>策略：</strong> 定位"企业级、完全可审计、零美国云依赖"，
+                    针对 DBS、OCBC、UOB 的合规和 AI 风险管理需求。
+                </div>
+                <div class="friendly-bar">
+                    <span>一体机友好度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:55%; background: linear-gradient(90deg, #ab47bc, #8e24aa);"></div></div>
+                    <span>55%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Philippines -->
+        <div class="country-card ph">
+            <div class="country-header">
+                <span class="flag">🇵🇭</span>
+                <div>
+                    <div class="country-name">菲律宾</div>
+                    <div style="font-size:0.78em; color:#888;">BSP (Bangko Sentral)</div>
+                </div>
+                <span class="priority-badge p4">P4</span>
+            </div>
+            <div class="country-body">
+                <div class="reg-item">
+                    <strong>BSP Circular 1170</strong><br/>
+                    明确允许远程 eKYC，认可 PhilSys 国家 ID。
+                </div>
+                <div class="reg-item">
+                    <strong>已有 SaaS 覆盖：</strong>
+                    UnionBank → Entrust/Onfido；UnionDigital → iProov
+                </div>
+                <div class="reg-item" style="background:#e0f7fa;">
+                    <strong>策略：</strong> 相对次要，可作为后期扩展。
+                    若支持 PhilSys 集成，可成为升级方案。
+                </div>
+                <div class="friendly-bar">
+                    <span>一体机友好度</span>
+                    <div class="bar-track"><div class="bar-fill" style="width:40%; background: linear-gradient(90deg, #26c6da, #00acc1);"></div></div>
+                    <span>40%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+    <h2>🏅 银行级认证要求</h2>
+
+    <p>进入东南亚 Tier-1 银行，需要满足以下认证要求。认证既是销售凭证，也是监管合规的前提。</p>
+
+    <div class="cert-grid">
+        <div class="cert-card cert-required">
+            <div class="cert-name">ISO/IEC 30107-3</div>
+            <span class="cert-level cl-req">必须 · 最关键</span>
+            <p style="font-size:0.87em; color:#444; margin:0;">PAD (Presentation Attack Detection) 活体检测标准。</p>
+            <div class="cert-meta">
+                🇻🇳 越南：2026/7 法律强制<br/>
+                🇲🇾 马来西亚：BNM Appendix 3 强制<br/>
+                🇹🇭 泰国：BoT 2023 指南要求<br/>
+                <strong>评测机构：iBeta（NIST 认证）</strong><br/>
+                目标：Level 2（现有）→ Level 3（2025 新标准，deepfake 防御）<br/>
+                周期：3-6 个月 | 成本：USD 25-40K
+            </div>
+        </div>
+
+        <div class="cert-card cert-required">
+            <div class="cert-name">ISO/IEC 27001</div>
+            <span class="cert-level cl-req">必须 · 基础门槛</span>
+            <p style="font-size:0.87em; color:#444; margin:0;">信息安全管理体系，所有 Tier-1 银行 IT 采购必需。</p>
+            <div class="cert-meta">
+                所有 SEA 市场通用要求<br/>
+                周期：6-12 个月<br/>
+                成本：USD 30-50K<br/>
+                <strong>优先级：第 1 个完成</strong>
+            </div>
+        </div>
+
+        <div class="cert-card cert-required">
+            <div class="cert-name">SOC 2 Type II</div>
+            <span class="cert-level cl-req">必须 · 数据安全</span>
+            <p style="font-size:0.87em; color:#444; margin:0;">安全、可用性、完整性、保密性、隐私性。</p>
+            <div class="cert-meta">
+                Tier-1 银行强烈要求<br/>
+                周期：6-12 个月<br/>
+                成本：USD 30-50K<br/>
+                <strong>与 ISO 27001 并行完成</strong>
+            </div>
+        </div>
+
+        <div class="cert-card cert-critical">
+            <div class="cert-name">ISO/IEC 19794-5</div>
+            <span class="cert-level cl-crit">关键 · 人脸数据</span>
+            <p style="font-size:0.87em; color:#444; margin:0;">人脸图像数据格式标准。</p>
+            <div class="cert-meta">
+                🇲🇾 Malaysia BNM Appendix 3 强制<br/>
+                🇻🇳 Vietnam Circular 50 参考<br/>
+                周期：2-4 个月<br/>
+                成本：USD 5-10K
+            </div>
+        </div>
+
+        <div class="cert-card cert-critical">
+            <div class="cert-name">FIDO 认证</div>
+            <span class="cert-level cl-crit">新兴强制</span>
+            <p style="font-size:0.87em; color:#444; margin:0;">FIDO2/WebAuthn 无密码认证标准。</p>
+            <div class="cert-meta">
+                🇻🇳 越南 Circular 50/2024：2026/7 法律强制<br/>
+                🇹🇭 泰国 BoT 鼓励<br/>
+                周期：2-3 个月<br/>
+                成本：USD 5-15K
+            </div>
+        </div>
+
+        <div class="cert-card cert-expected">
+            <div class="cert-name">🇲🇾 BNM 独立评估</div>
+            <span class="cert-level cl-exp">市场准入门票</span>
+            <p style="font-size:0.87em; color:#444; margin:0;">马来西亚专属：三模块独立外部评估。</p>
+            <div class="cert-meta">
+                评估机构：LGMS（Jumio 案例）<br/>
+                评估范围：ID 验证 + 人脸识别 + 活体检测<br/>
+                周期：4 个月<br/>
+                成本：MYR 200-500K (USD 45-110K)<br/>
+                <strong>通过后 = 所有 Malaysia 银行开放</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="insight">
+        <strong>💡 认证路线建议：</strong>
+        第 0-6 个月同步启动 ISO 27001 + SOC 2 Type II + ISO 30107-3 (iBeta Level 2)；
+        第 3-4 个月完成 ISO 19794-5 + FIDO；
+        第 4-7 个月完成 Malaysia BNM 独立评估。
+        所有认证在第 9 个月前完成，可支撑 Vietnam/Malaysia 两个市场的销售。
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ iBeta Level 3 (2025 新标准)：</strong>
+        iBeta 于 2025 年推出专门针对 Deepfake/AI 攻击的 Level 3 测试标准（BPCER ≤10%）。
+        由于 APAC Deepfake 欺诈率全球最高 (6.8%)，建议争取 Level 3 认证作为差异化优势。
+    </div>
+</section>
+
+<!-- COMPETITOR LANDSCAPE -->
+<section id="vendors">
+    <h2>⚔️ SEA 竞争格局 — 成功案例与你的缺口</h2>
+
+    <h3>全球头部 SaaS 厂商（无本地化能力，你的机遇）</h3>
+    <div class="vendor-grid">
+        <div class="vendor-card">
+            <div class="vendor-name">Jumio</div>
+            <div class="vendor-origin">🇺🇸 美国 · Centana Growth · $205M 融资</div>
+            <span class="vendor-tag tag-saas">SaaS Only</span>
+            <span class="vendor-tag" style="background:#ffebee; color:#c62828;">无本地化</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ 2026/3 通过 Malaysia BNM 评估（零缺陷，LGMS）<br/>
+                ✅ CIMB Philippines 客户<br/>
+                ❌ 纯云，不能满足越南/印尼数据驻留要求
+            </p>
+            <span class="vs-badge vs-neutral">相关度：高（参考对标）</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">Sumsub</div>
+            <div class="vendor-origin">🇬🇧 英国 · $85.6M ARR</div>
+            <span class="vendor-tag tag-saas">SaaS Only</span>
+            <span class="vendor-tag" style="background:#ffebee; color:#c62828;">无本地化</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ Gartner MQ 第 4（2024）<br/>
+                ✅ Singapore APAC 办公室<br/>
+                ❌ Deepfake 4x 上升（2024），但无本地防御能力
+            </p>
+            <span class="vs-badge vs-neutral">竞争威胁：中（价格差异化）</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">Onfido / Entrust</div>
+            <div class="vendor-origin">🇬🇧 英国 · 2024 被 Entrust 收购</div>
+            <span class="vendor-tag tag-saas">SaaS Only</span>
+            <span class="vendor-tag" style="background:#ffebee; color:#c62828;">无本地化</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ UnionBank Philippines 客户（case study）<br/>
+                ❌ 收购后定位模糊，SEA 专注度下降
+            </p>
+            <span class="vs-badge vs-neutral">竞争威胁：低（SEA 投入减少）</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">iProov</div>
+            <div class="vendor-origin">🇬🇧 英国 · $70M 融资 (2024)</div>
+            <span class="vendor-tag tag-saas">Cloud-Native</span>
+            <span class="vendor-tag" style="background:#ffebee; color:#c62828;">无本地化</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ MoMo Vietnam 客户 (2025/9)<br/>
+                ✅ UnionDigital Philippines (2025/10)<br/>
+                ❌ 纯云，Genuine Presence Assurance 依赖服务器端处理
+            </p>
+            <span class="vs-badge vs-compete">直接竞争：活体检测</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">Shufti Pro</div>
+            <div class="vendor-origin">🌐 全球 · VC 支持</div>
+            <span class="vendor-tag tag-onprem">On-Prem 支持</span>
+            <span class="vendor-tag tag-saas">+ SaaS</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ 唯一提供完整本地化部署的全球 SaaS 厂商<br/>
+                ❌ SEA 本地化投入/品牌力有限<br/>
+                ❌ 无 BNM/Vietnam 专项认证
+            </p>
+            <span class="vs-badge vs-compete">直接竞争：本地化定位</span>
+        </div>
+    </div>
+
+    <h3>东南亚本地强玩家（潜在合作伙伴）</h3>
+    <div class="vendor-grid">
+        <div class="vendor-card">
+            <div class="vendor-name">ADVANCE.AI</div>
+            <div class="vendor-origin">🇸🇬 新加坡 · SoftBank + Warburg Pincus · $730M</div>
+            <span class="vendor-tag tag-hybrid">混合（API + 私有云）</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ Indonesia 最大 eKYC 厂商（BRI、Mandiri、Jago）<br/>
+                ✅ 与 Brankas 整合（Indonesia 开放银行）<br/>
+                ✅ 1,000+ 企业客户，300 万日均 API 调用<br/>
+                ❌ 主要集中 Indonesia，Malaysia/Vietnam 资源少
+            </p>
+            <span class="vs-badge vs-partner">建议：合作 (你的硬件 + 他们的软件)</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">Privy</div>
+            <div class="vendor-origin">🇮🇩 印度尼西亚 · GGV + KKR</div>
+            <span class="vendor-tag tag-local">Indonesia 本地</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ 唯一通过 BI 监管沙箱，拥有 Dukcapil 直接接口<br/>
+                ✅ BRI、Mandiri、BNI、CIMB、BSI 客户<br/>
+                ❌ 纯 SaaS API，无本地化推理能力
+            </p>
+            <span class="vs-badge vs-partner">建议：合作 (关键 Indonesia 渠道)</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">FPT IS / FPT Digital</div>
+            <div class="vendor-origin">🇻🇳 越南 · 国有企业 FPT</div>
+            <span class="vendor-tag tag-local">Vietnam 主权基础设施</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ 拥有 Dukcapil（Vietnam）数据库访问权<br/>
+                ✅ FPT.eKYC 已部署银行、保险、房地产<br/>
+                ⭐ 外国一体机进入 Vietnam 的<strong>必要合作伙伴</strong>
+            </p>
+            <span class="vs-badge vs-partner">必须合作 · Vietnam P1 关键</span>
+        </div>
+        <div class="vendor-card">
+            <div class="vendor-name">Innov8tif / EMAS</div>
+            <div class="vendor-origin">🇲🇾 马来西亚 · NexG 上市子公司</div>
+            <span class="vendor-tag tag-local">Malaysia 本地</span>
+            <p style="font-size:0.84em; margin-top:12px; color:#555;">
+                ✅ EMAS eKYC — MyKad OCR + 人脸识别<br/>
+                ✅ 2025 年与 TOPPAN IDGATE（日本）集成 AI 人脸识别<br/>
+                ❌ 主要客户为马来西亚中大型银行（未公开）
+            </p>
+            <span class="vs-badge vs-compete">竞争：Malaysia 本地市场</span>
+        </div>
+    </div>
+
+    <div class="insight">
+        <strong>💡 核心市场缺口：</strong>
+        全球 Gartner MQ 前 4 名（Jumio、Incode、Sumsub、Onfido）全部是纯 SaaS 云，
+        无法满足越南/马来西亚/印度尼西亚的数据本地化要求。
+        只有 Shufti Pro 有本地化能力，但在 SEA 的品牌力和合规认证投入远不足。
+        <strong>这是结构性供给缺口，不是竞争力差异。</strong>
+    </div>
+</section>
+
+<!-- GTM STRATEGY -->
+<section id="gtm">
+    <h2>🚀 三阶段 GTM 战略</h2>
+
+    <div class="phase-flow">
+        <!-- Phase 1 -->
+        <div class="phase-card ph1">
+            <span class="phase-num">第一阶段</span>
+            <div class="phase-title">基础建设 + Vietnam 先发</div>
+            <div class="phase-period">🗓 0 – 6 个月 | 目标市场：越南</div>
+            <ul class="phase-items">
+                <li>完成 MVP + 启动 ISO 27001 / SOC 2 Type II / iBeta 认证</li>
+                <li>与 <strong>FPT IS</strong> 签署战略合作意向书（访问 Dukcapil 必需）</li>
+                <li>目标客户：<strong>Vietcombank、BIDV</strong>（国企银行，最迫切需求）</li>
+                <li>启动 PoC：3-4 个月，目标欺诈率下降 ≥30%</li>
+                <li>销售团队组建：Vietnam 销售 1-2 人</li>
+            </ul>
+            <div class="phase-kpi">
+                <strong>里程碑：</strong> FPT 合作协议 ✓ | 1 家 Vietnam 银行 PoC 签约 ✓ | ISO 27001 通过 ✓
+            </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase-card ph2">
+            <span class="phase-num">第二阶段</span>
+            <div class="phase-title">Malaysia 准入 + Indonesia 协同</div>
+            <div class="phase-period">🗓 6 – 12 个月 | 目标市场：马来西亚 + 印度尼西亚</div>
+            <ul class="phase-items">
+                <li>第 6-10 个月：完成 <strong>Malaysia BNM 独立评估（LGMS）</strong></li>
+                <li>BNM 评估通过 = 直销 Maybank、CIMB、OCBC、RHB</li>
+                <li>Vietnam PoC 转正式签约（第 6-8 个月）</li>
+                <li>Indonesia：与 <strong>Privy 或 ADVANCE.AI</strong> 签署合作协议</li>
+                <li>目标：国企银行 BRI、Mandiri、BNI（通过合作伙伴渠道）</li>
+                <li>SI 伙伴接触：TCS、Infosys Singapore 办公室</li>
+            </ul>
+            <div class="phase-kpi">
+                <strong>里程碑：</strong> BNM 评估通过 ✓ | Vietnam 1-2 家签约 ✓ | Malaysia 2-3 家 PoC ✓ | 年 ARR ¥300-600K
+            </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase-card ph3">
+            <span class="phase-num">第三阶段</span>
+            <div class="phase-title">区域扩展 + 生态融合</div>
+            <div class="phase-period">🗓 12 – 18 个月 | 目标市场：泰国 + 新加坡 + 区域</div>
+            <ul class="phase-items">
+                <li>进入泰国：NDID 平台认证服务提供商（ASP）注册</li>
+                <li>进入新加坡：直销 DBS、OCBC、UOB（主权/合规定位）</li>
+                <li>SI 渠道激活：TCS/Infosys/Accenture 将你纳入 CBS 升级 BOM</li>
+                <li>深化 Indonesia：Privy/ADVANCE.AI 渠道持续扩大</li>
+                <li>与 Go1（北美）和第四范式（中国）探索区域合作</li>
+                <li>准备 A 轮融资材料（ARR > ¥1M + 多国案例）</li>
+            </ul>
+            <div class="phase-kpi">
+                <strong>里程碑：</strong> 6-8 家 Tier-1 银行客户 ✓ | 年 ARR ¥1-1.5M ✓ | A 轮融资启动 ✓
+            </div>
+        </div>
+    </div>
+
+    <h3>渠道策略优先级</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>渠道</th>
+                <th>优先级</th>
+                <th>适用市场</th>
+                <th>预期贡献</th>
+                <th>关键动作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>系统集成商 (SI)</strong><br/>TCS, Infosys, Accenture</td>
+                <td>⭐⭐⭐ 最高</td>
+                <td>全区域</td>
+                <td>40-50% 客户</td>
+                <td>第 6 个月在 Singapore 办公室发起接触</td>
+            </tr>
+            <tr>
+                <td><strong>本地合作伙伴</strong><br/>FPT (VN), Privy (ID)</td>
+                <td>⭐⭐⭐ 最高</td>
+                <td>越南、印度尼西亚</td>
+                <td>30-40% 客户</td>
+                <td>第 2 个月启动 FPT 合作谈判</td>
+            </tr>
+            <tr>
+                <td><strong>直销</strong><br/>内部销售团队</td>
+                <td>⭐⭐ 中</td>
+                <td>马来西亚、新加坡</td>
+                <td>20-30% 客户</td>
+                <td>BNM 评估通过后激活</td>
+            </tr>
+            <tr>
+                <td><strong>代理/分销</strong><br/>本地 IT 代理商</td>
+                <td>⭐ 辅助</td>
+                <td>Tier-2/Tier-3 银行</td>
+                <td>10-20% 客户</td>
+                <td>第 12 个月建立代理体系</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>定价策略（针对 SEA 调整）</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>定价模式</th>
+                <th>适用客户</th>
+                <th>价格</th>
+                <th>竞品对比</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>硬件 + 软件许可</strong><br/>（一次性购买）</td>
+                <td>Tier-1 银行</td>
+                <td>¥200-250K<br/>+¥40-50K/年维护</td>
+                <td>比 Jumio/Sumsub 年成本<br/>低 70-90%</td>
+            </tr>
+            <tr>
+                <td><strong>年度订阅</strong><br/>（软件授权）</td>
+                <td>Tier-2 银行、金融科技</td>
+                <td>¥150K/年<br/>（含更新和支持）</td>
+                <td>Jumio 约 ¥200-400K/年<br/>（100 万交易估）</td>
+            </tr>
+            <tr>
+                <td><strong>交易费</strong><br/>（灵活补充）</td>
+                <td>支付平台、大银行</td>
+                <td>¥0.01-0.05/笔<br/>（硬件购后）</td>
+                <td>Jumio ¥0.5-2/笔<br/>差价 10-20 倍</td>
+            </tr>
+            <tr class="kpi-row">
+                <td><strong>PoC（获取案例）</strong></td>
+                <td>首家 Vietnam/Malaysia 客户</td>
+                <td>免费 3-6 个月<br/>成功后转标准合同</td>
+                <td>成功案例价值远超成本</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+    <h2>📅 18 个月执行路线图</h2>
+
+    <div class="timeline">
+        <div class="tl-item">
+            <div class="tl-dot">M1-3</div>
+            <div class="tl-content">
+                <div class="tl-date">第 1-3 个月 · 基础建设</div>
+                <div class="tl-title">认证启动 + FPT 合作 + 产品 MVP</div>
+                <ul class="tl-items">
+                    <li>启动 ISO 27001 + SOC 2 Type II 审计流程</li>
+                    <li>提交 iBeta ISO 30107-3 Level 2 测试申请</li>
+                    <li>与 FPT IS 完成初次洽谈，签署合作 MOU</li>
+                    <li>MVP 产品完成：人脸识别 + 活体检测 + 证件识别 + REST API</li>
+                    <li>越南销售团队招聘（1-2 人）</li>
+                    <li>成立越南代表处或寻找本地代理</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tl-item">
+            <div class="tl-dot">M4-6</div>
+            <div class="tl-content">
+                <div class="tl-date">第 4-6 个月 · Vietnam PoC 启动</div>
+                <div class="tl-title">越南首家银行 PoC + ISO 认证完成</div>
+                <ul class="tl-items">
+                    <li><strong>Vietnam：</strong> 通过 FPT 联合向 Vietcombank 或 BIDV 发起 PoC 提案</li>
+                    <li>PoC 目标：欺诈率下降 ≥30%，处理速度 &lt;200ms</li>
+                    <li>完成 ISO 27001 + SOC 2 Type II 认证</li>
+                    <li>完成 iBeta ISO 30107-3 Level 2 测试</li>
+                    <li>准备 Malaysia BNM 评估材料</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tl-item">
+            <div class="tl-dot">M7-9</div>
+            <div class="tl-content">
+                <div class="tl-date">第 7-9 个月 · Malaysia BNM 评估</div>
+                <div class="tl-title">BNM 独立评估 + Vietnam PoC 延续</div>
+                <ul class="tl-items">
+                    <li><strong>Malaysia：</strong> 向 LGMS 提交 BNM eKYC 独立评估申请</li>
+                    <li>评估范围：MyKad OCR + 人脸识别 + 活体检测（Appendix 3）</li>
+                    <li>Vietnam PoC 第 2 轮：扩大数据集，验证欺诈检测精度</li>
+                    <li>Indonesia：与 Privy 签署合作协议</li>
+                    <li>TCS/Infosys Singapore 初次接触，展示产品</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tl-item">
+            <div class="tl-dot">M10-12</div>
+            <div class="tl-content">
+                <div class="tl-date">第 10-12 个月 · BNM 通过 + 签约</div>
+                <div class="tl-title">Malaysia 市场开放 + Vietnam 正式签约</div>
+                <ul class="tl-items">
+                    <li><strong>🏆 BNM 评估通过（目标：零缺陷）</strong></li>
+                    <li><strong>Vietnam：</strong> PoC 成功 → 正式签约（第一家 Tier-1 银行）</li>
+                    <li><strong>Malaysia：</strong> 向 Maybank、CIMB 发起销售（BNM 评估证书为凭据）</li>
+                    <li>Indonesia：Privy 渠道激活，向 BRI、Mandiri 发起提案</li>
+                    <li>年度 ARR 目标：¥300-500K</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tl-item">
+            <div class="tl-dot">M13-15</div>
+            <div class="tl-content">
+                <div class="tl-date">第 13-15 个月 · 区域扩展</div>
+                <div class="tl-title">Thailand NDID + Singapore Tier-1</div>
+                <ul class="tl-items">
+                    <li><strong>Thailand：</strong> 申请 NDID 认证服务提供商（ASP）资格</li>
+                    <li>目标：KBank、SCB、BBL</li>
+                    <li><strong>Singapore：</strong> 直销 DBS/OCBC/UOB（"零美国云依赖"定位）</li>
+                    <li>Malaysia：2-3 家正式签约</li>
+                    <li>SI 合作深化：TCS/Infosys 产品认证并进入其 BOM</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tl-item">
+            <div class="tl-dot">M16-18</div>
+            <div class="tl-content">
+                <div class="tl-date">第 16-18 个月 · 生态 + A 轮</div>
+                <div class="tl-title">区域生态整合 + A 轮融资</div>
+                <ul class="tl-items">
+                    <li>Indonesia 正式客户：BRI 或 Mandiri（通过 Privy 渠道）</li>
+                    <li>SI 渠道：TCS/Infosys 推动 2-3 家新客户</li>
+                    <li>准备 A 轮融资（目标 8-15M USD）</li>
+                    <li><strong>融资亮点：ARR ¥1-1.5M + 越南/马来西亚/印度尼西亚三国客户 + 6-8 家 Tier-1 银行</strong></li>
+                    <li>探索与 Go1（北美）的区域合作协议</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI TABLE -->
+    <h3>关键 KPI 追踪</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>时间</th>
+                <th>关键里程碑</th>
+                <th>Vietnam</th>
+                <th>Malaysia</th>
+                <th>Indonesia</th>
+                <th>年 ARR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>6 个月</strong></td>
+                <td>认证完成 + FPT 合作</td>
+                <td>1 个 PoC</td>
+                <td>BNM 申请中</td>
+                <td>合作谈判</td>
+                <td>¥0</td>
+            </tr>
+            <tr>
+                <td><strong>12 个月</strong></td>
+                <td>BNM 通过 + VN 签约</td>
+                <td>1-2 家签约</td>
+                <td>2-3 家 PoC</td>
+                <td>Privy 合作</td>
+                <td>¥300-500K</td>
+            </tr>
+            <tr>
+                <td><strong>18 个月</strong></td>
+                <td>A 轮融资准备</td>
+                <td>2-3 家签约</td>
+                <td>2-3 家签约</td>
+                <td>1-2 家签约</td>
+                <td>¥1-1.5M</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- RISKS -->
+<section id="risks">
+    <h2>⚠️ 风险与缓解策略</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>风险</th>
+                <th>可能性</th>
+                <th>影响</th>
+                <th>缓解策略</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>FPT 拒绝合作<br/>（越南市场封闭）</strong></td>
+                <td>🟠 中</td>
+                <td>🔴 高<br/>（P1 计划失效）</td>
+                <td>同时接触 VNPT 和 Viettel；或以一体机推理层为定位，不需要 Dukcapil 中介身份</td>
+            </tr>
+            <tr>
+                <td><strong>BNM 评估未通过<br/>（Malaysia 进入失败）</strong></td>
+                <td>🟡 低</td>
+                <td>🔴 高</td>
+                <td>提前与 LGMS 预沟通评估标准；参考 Jumio 零缺陷案例准备材料；预留 1 次重新评估预算</td>
+            </tr>
+            <tr>
+                <td><strong>Jumio/iProov 推出本地化产品</strong></td>
+                <td>🟠 中</td>
+                <td>🟠 中</td>
+                <td>抢先完成 BNM 评估（第一个通过 = 先发优势）；强调"AI 原生 + 银行完全控制"</td>
+            </tr>
+            <tr>
+                <td><strong>ADVANCE.AI 收购 Privy<br/>或扩展到 VN/MY</strong></td>
+                <td>🟡 低-中</td>
+                <td>🟠 中</td>
+                <td>快速建立多个合作伙伴；不依赖单一渠道</td>
+            </tr>
+            <tr>
+                <td><strong>银行采购周期长<br/>（现金流压力）</strong></td>
+                <td>🟢 高（普遍现象）</td>
+                <td>🟠 中</td>
+                <td>PoC 模式先行，缩短初期决策周期；同步多个销售线索，分散风险</td>
+            </tr>
+            <tr>
+                <td><strong>iBeta Level 3 认证未通过<br/>（深度伪造防御不达标）</strong></td>
+                <td>🟡 低</td>
+                <td>🟡 中</td>
+                <td>Level 2 已满足现有法规要求；Level 3 作为可选升级；APAC 客户会优先关注 Level 2 合规</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="insight">
+        <strong>💡 最终战略建议：</strong>
+        越南是监管驱动力最强的切入点，通过 FPT IS 合作是必要而非可选。
+        马来西亚的 BNM 独立评估体系是全球最清晰的"市场准入考试"，
+        通过即等于拿到整个马来西亚银行市场的通行证——这是最高 ROI 的单笔认证投入。
+        不与 Jumio/Sumsub 的 SaaS 价格战竞争，而是聚焦"<strong>数据主权 + AI 原生 + 监管合规</strong>"——这是他们永远无法提供的。
+    </div>
+</section>
+
+<!-- ROI & RISK ANALYSIS -->
+<section id="roi">
+    <h2>📊 项目风险与收益分析</h2>
+
+    <div class="exec-box">
+        <h3>从 WebSaaS eKYC 到硬件一体机：风险可控、收益不对称</h3>
+        <p>
+            现有 WebSaaS eKYC 产品基础降低了约 60% 的技术风险。核心 AI 算法（人脸识别、活体检测、OCR）已具备，
+            剩余工作集中在<strong>硬件整合、本地化认证、销售模型转型</strong>三个维度。
+            三年路径上，保守情景可实现正向现金流，中性情景年化回报率超 40%，
+            乐观情景具备成为东南亚细分市场第一的潜力。
+        </p>
+    </div>
+
+    <h3>📦 硬件研发成本与时间线</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>阶段</th>
+                <th>周期</th>
+                <th>主要工作</th>
+                <th>预估投入</th>
+                <th>核心风险</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>EVT（工程验证）</strong></td>
+                <td>M0–M4</td>
+                <td>硬件选型（GPU/NPU）、散热设计、AI 推理适配、内部测试</td>
+                <td>¥80–120 万</td>
+                <td>算法适配延迟、散热不达标</td>
+            </tr>
+            <tr>
+                <td><strong>DVT（设计验证）</strong></td>
+                <td>M4–M9</td>
+                <td>量产前模具、BOM 锁定、iBeta Level 2 认证测试准备</td>
+                <td>¥120–180 万</td>
+                <td>认证未通过需重新测试（+3个月）</td>
+            </tr>
+            <tr>
+                <td><strong>PVT（生产验证）</strong></td>
+                <td>M9–M14</td>
+                <td>小批量生产（首批 50–100 台）、渠道合作伙伴交付、BNM/越南 Circular 合规备案</td>
+                <td>¥150–250 万</td>
+                <td>供应链延误（GPU 缺货）、合规周期超预期</td>
+            </tr>
+            <tr class="kpi-row">
+                <td><strong>合计</strong></td>
+                <td>12–18 个月</td>
+                <td>含认证、渠道建设、首批交付</td>
+                <td><strong>¥350–550 万</strong></td>
+                <td>最高风险期：DVT→PVT 过渡</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>💹 利润率结构对比</h3>
+    <table>
+        <thead>
+            <tr><th>收入流</th><th>毛利率</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>纯 SaaS（当前）</td>
+                <td>
+                    <div class="margin-bar" style="background:linear-gradient(90deg,#5c6bc0,#9fa8da);width:82%">75–85%</div>
+                </td>
+                <td>API 调用计费，边际成本极低</td>
+            </tr>
+            <tr>
+                <td>硬件一体机（BOM）</td>
+                <td>
+                    <div class="margin-bar" style="background:linear-gradient(90deg,#90a4ae,#b0bec5);width:38%">30–40%</div>
+                </td>
+                <td>GPU/NPU BOM + 组装 + 物流 + 质保</td>
+            </tr>
+            <tr>
+                <td>年度软件订阅（附加）</td>
+                <td>
+                    <div class="margin-bar" style="background:linear-gradient(90deg,#43a047,#66bb6a);width:90%">88–92%</div>
+                </td>
+                <td>模型升级、合规更新、API 调用包</td>
+            </tr>
+            <tr class="kpi-row">
+                <td><strong>混合模式（硬件 40% + 软件 60%）</strong></td>
+                <td>
+                    <div class="margin-bar" style="background:linear-gradient(90deg,#e65100,#f57c00);width:73%">70–76%</div>
+                </td>
+                <td>与 GoAbacus Go1 模型一致，优于纯硬件竞品</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>🎯 三情景收益预测（3 年）</h3>
+    <div class="scenario-grid">
+        <div class="scenario-card conservative">
+            <div class="scenario-label">保守情景</div>
+            <div class="scenario-title">监管落地慢 + 销售周期长</div>
+            <div class="scenario-revenue">¥5.9M</div>
+            <div class="scenario-period">累计 3 年营收 · 盈亏平衡于第 28 个月</div>
+            <ul class="scenario-items">
+                <li>🏦 签约银行：4–6 家（越南 2 家、马来 2 家）</li>
+                <li>📦 交付台数：约 120 台</li>
+                <li>💰 ASP：$65K/套（硬件 $40K + 3年软件 $25K）</li>
+                <li>📈 Year 3 ARR：¥1.8M</li>
+                <li>⚠️ 假设：BNM 评估需 2 次、FPT 谈判 9 个月</li>
+            </ul>
+        </div>
+        <div class="scenario-card mid">
+            <div class="scenario-label">中性情景</div>
+            <div class="scenario-title">正常监管节奏 + 渠道合作顺利</div>
+            <div class="scenario-revenue">¥13.6M</div>
+            <div class="scenario-period">累计 3 年营收 · 盈亏平衡于第 18 个月</div>
+            <ul class="scenario-items">
+                <li>🏦 签约银行：12–16 家（越南 4、马来 4、印尼 4+）</li>
+                <li>📦 交付台数：约 320 台</li>
+                <li>💰 ASP：$70K/套</li>
+                <li>📈 Year 3 ARR：¥5.2M</li>
+                <li>✅ 假设：BNM 一次通过、FPT/VNPT 双线合作</li>
+            </ul>
+        </div>
+        <div class="scenario-card bull">
+            <div class="scenario-label">乐观情景</div>
+            <div class="scenario-title">监管加速 + 深度伪造浪潮推动需求爆发</div>
+            <div class="scenario-revenue">¥40–60M</div>
+            <div class="scenario-period">Year 5 累计 · 区域领导者地位</div>
+            <ul class="scenario-items">
+                <li>🏦 签约机构：50+ 家（含保险、券商、电信）</li>
+                <li>📦 交付台数：800–1,200 台</li>
+                <li>💰 ASP：$75K+ / 大单定制化溢价</li>
+                <li>📈 Year 5 ARR：¥18M+</li>
+                <li>🚀 假设：深度伪造立法加速、竞品未能快速本地化</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="insight">
+        <strong>💡 关键洞察：</strong> 硬件 BOM 成本不是劣势——GoAbacus Go1 定价 $60–100K/套而市场仍然买单，
+        因为客户购买的是<strong>数据主权 + 合规确定性</strong>，不是硬件本身。
+        混合模式（硬件首付 + 年费软件）的 LTV 比纯 SaaS 高 2.3x，且客户流失率更低（硬件锁定效应）。
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ 最高风险：</strong> 首个客户获取是关键路径。建议从<strong>现有 WebSaaS 客户中转化</strong>（内部部署升级），
+        而非从零开拓 Tier-1 银行——这可将首次交付时间缩短 6–9 个月，并提供真实案例用于后续销售。
+    </div>
+</section>
+
+<!-- COMPETITIVE WINDOW -->
+<section id="window">
+    <h2>⏰ 市场爆发点与竞争窗口期</h2>
+
+    <div class="exec-box">
+        <h3>结论：需求爆发正在发生，黄金窗口为 2025–2029 年，核心期是 2026–2027 年</h3>
+        <p>
+            不是"未来某天会爆发"——<strong>爆发已经开始</strong>。2025 年 Q3 APAC 深度伪造欺诈飙升 720%、
+            越南 86M 账户面临冻结、马来西亚 BNM 独立评估窗口已开放、泰国虚拟银行 RFP 正在发出。
+            现在入场意味着你能在监管窗口关闭前完成认证、在竞品跟进前建立渠道锁定。
+        </p>
+    </div>
+
+    <h3>🚨 需求引爆信号（2025 年实时数据）</h3>
+    <div class="signal-grid">
+        <div class="signal-card urgent">
+            <div class="signal-icon">🎭</div>
+            <div class="signal-title">深度伪造欺诈激增</div>
+            <div class="signal-value">+720%</div>
+            <div class="signal-desc">2025 年 Q3 APAC 区域同比增幅 · 2024 年全球增幅 4x · Grey Nickel 欺诈组织年损失超 $1.4B</div>
+        </div>
+        <div class="signal-card urgent">
+            <div class="signal-icon">🇻🇳</div>
+            <div class="signal-title">越南账户冻结令</div>
+            <div class="signal-value">86M 账户</div>
+            <div class="signal-desc">Circular 17/2024 生效 — 2025 年 7 月起未完成生物识别核验的账户将被强制冻结，银行采购紧迫</div>
+        </div>
+        <div class="signal-card urgent">
+            <div class="signal-icon">🇲🇾</div>
+            <div class="signal-title">马来西亚 BNM 评估</div>
+            <div class="signal-value">窗口已开</div>
+            <div class="signal-desc">BNM 独立 eKYC 供应商评估体系正式运行 · 第一批通过者获得先发市场锁定优势</div>
+        </div>
+        <div class="signal-card rising">
+            <div class="signal-icon">🇹🇭</div>
+            <div class="signal-title">泰国虚拟银行 RFP</div>
+            <div class="signal-value">3 张牌照</div>
+            <div class="signal-desc">BOT 批准 3 家虚拟银行 · 2026 年正式开业 · 全套数字身份验证系统招采已启动</div>
+        </div>
+        <div class="signal-card rising">
+            <div class="signal-icon">🇮🇩</div>
+            <div class="signal-title">印尼 OJK 合规审计</div>
+            <div class="signal-value">持续加压</div>
+            <div class="signal-desc">POJK 11/2022 执行力度持续增强 · 数据本地化要求 · 约 120 家持牌金融机构需升级系统</div>
+        </div>
+        <div class="signal-card watch">
+            <div class="signal-icon">💰</div>
+            <div class="signal-title">边缘 AI 硬件成本曲线</div>
+            <div class="signal-value">&lt;$5K by 2027</div>
+            <div class="signal-desc">NVIDIA Jetson Orin Nano $249 · L4 GPU ~$2,500 · Hailo-8 26TOPS @ 2.5W · 成本拐点将使更多客户可负担</div>
+        </div>
+    </div>
+
+    <h3>📅 监管截止日期级联（需求触发地图）</h3>
+    <div class="reg-timeline">
+        <div class="reg-row">
+            <div class="reg-year" style="background:#c62828;">2025 H1<br/><span style="font-size:0.75em;opacity:0.85">已发生</span></div>
+            <div class="reg-events">
+                <span class="reg-pill rp-hot">🇻🇳 Circular 17 生效</span>
+                <span class="reg-pill rp-hot">🇲🇾 BNM 独立评估开放</span>
+                <span class="reg-pill rp-warm">🇮🇩 OJK 审计加密</span>
+                <span class="reg-pill rp-blue">深度伪造立法草案 SG/PH</span>
+            </div>
+        </div>
+        <div class="reg-row">
+            <div class="reg-year" style="background:#e65100;">2025 H2<br/><span style="font-size:0.75em;opacity:0.85">NOW ← 你在这里</span></div>
+            <div class="reg-events">
+                <span class="reg-pill rp-hot">🇻🇳 86M 账户强制冻结</span>
+                <span class="reg-pill rp-hot">🇲🇾 银行 RFP 高峰期</span>
+                <span class="reg-pill rp-warm">🇹🇭 虚拟银行 RFP 启动</span>
+                <span class="reg-pill rp-blue">🇵🇭 BSP eKYC 框架落地</span>
+            </div>
+        </div>
+        <div class="reg-row">
+            <div class="reg-year" style="background:#3949ab;">2026<br/><span style="font-size:0.75em;opacity:0.85">黄金核心期</span></div>
+            <div class="reg-events">
+                <span class="reg-pill rp-hot">🇻🇳 二次合规核查浪潮</span>
+                <span class="reg-pill rp-hot">🇹🇭 3 家虚拟银行开业</span>
+                <span class="reg-pill rp-warm">🇮🇩 OJK 合规截止强化</span>
+                <span class="reg-pill rp-green">🇸🇬 MAS 离岸 eKYC 互认</span>
+            </div>
+        </div>
+        <div class="reg-row">
+            <div class="reg-year" style="background:#00897b;">2027–2028<br/><span style="font-size:0.75em;opacity:0.85">窗口收窄</span></div>
+            <div class="reg-events">
+                <span class="reg-pill rp-blue">Jumio 可能推出本地部署版</span>
+                <span class="reg-pill rp-blue">云主权供应商（AWS/Azure）完成本地区部署</span>
+                <span class="reg-pill rp-green">市场进入混合模式稳态</span>
+                <span class="reg-pill rp-warm">先发者已建立渠道壁垒</span>
+            </div>
+        </div>
+        <div class="reg-row">
+            <div class="reg-year" style="background:#546e7a;">2029+<br/><span style="font-size:0.75em;opacity:0.85">市场稳态</span></div>
+            <div class="reg-events">
+                <span class="reg-pill rp-blue">格局基本锁定</span>
+                <span class="reg-pill rp-blue">先发者凭认证 + 客户数量建立护城河</span>
+                <span class="reg-pill rp-green">后进入者需要 3–5 年才能赶上</span>
+            </div>
+        </div>
+    </div>
+
+    <h3>🏁 竞争窗口四阶段</h3>
+    <div class="window-strip">
+        <div class="window-phase wp-ignition">
+            <div class="wp-year">2025–2026</div>
+            <div class="wp-title">🔥 点火期</div>
+            <div class="wp-desc">监管截止触发需求爆发<br/>先发认证者获得第一批客户<br/>竞品尚未本地化</div>
+        </div>
+        <div class="window-phase wp-golden">
+            <div class="wp-year">2026–2027</div>
+            <div class="wp-title">⭐ 黄金核心期</div>
+            <div class="wp-desc">需求最旺盛 + 竞争最少<br/>规模化交付 + 渠道锁定<br/>单季可签 8–10 家银行</div>
+        </div>
+        <div class="window-phase wp-mature">
+            <div class="wp-year">2027–2028</div>
+            <div class="wp-title">📊 成熟扩张期</div>
+            <div class="wp-desc">Jumio 等可能跟进<br/>但认证 + 渠道壁垒已建立<br/>靠品牌和客户数量防御</div>
+        </div>
+        <div class="window-phase wp-late">
+            <div class="wp-year">2029+</div>
+            <div class="wp-title">🏰 格局锁定</div>
+            <div class="wp-desc">市场集中于 3–5 个玩家<br/>先发者占主导<br/>后进入者成本 3–5x</div>
+        </div>
+    </div>
+
+    <h3>🆚 竞争威胁时间线</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>竞品</th>
+                <th>当前状态</th>
+                <th>可能威胁时间</th>
+                <th>威胁等级</th>
+                <th>应对策略</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Jumio</strong></td>
+                <td>纯 SaaS，无本地部署</td>
+                <td>2027 年底（如果开发）</td>
+                <td>🟡 低–中</td>
+                <td>抢先完成 BNM 认证；建立第一客户案例</td>
+            </tr>
+            <tr>
+                <td><strong>iProov</strong></td>
+                <td>云端优先，英国监管合规</td>
+                <td>2027–2028（合作模式）</td>
+                <td>🟡 低</td>
+                <td>本地数据主权差异化；iProov 不擅长硬件集成</td>
+            </tr>
+            <tr>
+                <td><strong>GoAbacus Go1</strong></td>
+                <td>新加坡，已有硬件产品</td>
+                <td>正在进行中</td>
+                <td>🟠 中</td>
+                <td>价格竞争力 + 越南/印尼本地化（Go1 主打 SG/MY）</td>
+            </tr>
+            <tr>
+                <td><strong>第四范式 SageOne</strong></td>
+                <td>中国本土，国际化起步</td>
+                <td>2026–2027（东南亚扩张）</td>
+                <td>🟠 中–高</td>
+                <td>先发渠道锁定；本地团队 + 监管关系是护城河</td>
+            </tr>
+            <tr>
+                <td><strong>ADVANCE.AI</strong></td>
+                <td>东南亚本土 SaaS</td>
+                <td>不太可能做硬件（资本不足）</td>
+                <td>🟢 低</td>
+                <td>可考虑合作而非竞争（渠道补充）</td>
+            </tr>
+            <tr>
+                <td><strong>AWS / Azure 本地区</strong></td>
+                <td>云服务，非硬件</td>
+                <td>2028+（本地 Zone 覆盖）</td>
+                <td>🟡 低–中</td>
+                <td>监管要求物理隔离 = 云服务天然不满足</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="cta-box">
+        <h3>🎯 战略行动窗口</h3>
+        <p>
+            <span class="cta-highlight">你的窗口：2025 H2 — 2027</span>。
+            现在启动 = 2026 年底完成 EVT/DVT，BNM 认证同步推进，2027 年规模化交付。
+            深度伪造欺诈浪潮已经到来——银行不缺购买意愿，缺的是<strong>能通过合规审查的供应商</strong>。
+            2028 年以后，Jumio 若推出本地化版本，市场会进入混合模式稳态；
+            但届时你已完成 BNM 认证 + 拥有 10–15 家银行客户，
+            <span class="cta-highlight">护城河已建立，后来者需要 3–5 年才能赶上</span>。
+        </p>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     STARTUP ANALYST — 量化建模
+     ══════════════════════════════════════════════════ -->
+<section id="analyst">
+    <h2>🔢 内部孵化量化建模</h2>
+    <div class="analyst-badge">⚡ Powered by Startup Analyst Skill · ADVANCE.AI 内部 P&amp;L 视角 · 底部向上 × 多情景建模</div>
+
+    <!-- TAM/SAM/SOM -->
+    <h3>📐 TAM / SAM / SOM — 三层市场规模（底部向上法）</h3>
+
+    <div class="tam-funnel">
+        <div class="funnel-row">
+            <div class="funnel-lbl">TAM</div>
+            <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:100%;background:linear-gradient(90deg,#3949ab,#7986cb);">
+                    东南亚 BFSI 生物识别 + eKYC 市场（2026）≈ $1.6B
+                </div>
+            </div>
+            <div class="funnel-desc">6 国全市场，含 SaaS + 本地化 + 政府</div>
+        </div>
+        <div class="funnel-row">
+            <div class="funnel-lbl">SAM</div>
+            <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:62%;background:linear-gradient(90deg,#00897b,#26a69a);">
+                    强制本地化细分（VN+MY+ID）≈ $420M
+                </div>
+            </div>
+            <div class="funnel-desc">~120 家 Tier-1/Tier-2 银行，40-60% 需本地化</div>
+        </div>
+        <div class="funnel-row">
+            <div class="funnel-lbl">SOM</div>
+            <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:28%;background:linear-gradient(90deg,#f57c00,#ffa726);">
+                    3 年可触达（硬件一体机定位）≈ $28-45M
+                </div>
+            </div>
+            <div class="funnel-desc">目标 20-35 家银行 × $70-130K ASP × 3 年</div>
+        </div>
+        <div class="funnel-row">
+            <div class="funnel-lbl">Year 3</div>
+            <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:14%;background:linear-gradient(90deg,#e53935,#ef5350);">
+                    现实目标（市场渗透率 3-5%）≈ $12-18M ARR
+                </div>
+            </div>
+            <div class="funnel-desc">基于现实客户获取速度重新校正</div>
+        </div>
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ TAM 修正：</strong> 外部市场报告引用 $800M-1.09B eKYC 市场，但这包含 SaaS 软件、云服务、政府系统等。
+        对于 ADVANCE.AI 的本地部署顾问系统，真实 SAM 应聚焦于<strong>强制数据本地化 + 当前已是 ADVANCE.AI SaaS 客户 + 有能力/意愿升级到本地部署</strong>的银行——
+        约 30-50 家机构，即我们的<strong>可直接转化的内部 SOM</strong>。外部新客户是第二阶段的增量。
+    </div>
+
+    <!-- 单位经济 -->
+    <h3>💰 单位经济（Unit Economics）</h3>
+    <div class="model-grid">
+        <div class="model-card">
+            <h4>每客户价值（LTV）</h4>
+            <div class="model-row"><span class="lbl">硬件 ASP</span><span class="val">$65K（¥470K）</span></div>
+            <div class="model-row"><span class="lbl">年软件维护费</span><span class="val">$12K/年</span></div>
+            <div class="model-row"><span class="lbl">合同期限</span><span class="val">5 年（典型银行）</span></div>
+            <div class="model-row"><span class="lbl">模型升级追加</span><span class="val">$8K（Year 2-3 常见）</span></div>
+            <div class="model-row"><span class="lbl" style="font-weight:700">LTV（5 年）</span><span class="val good">$133K ≈ ¥960K</span></div>
+        </div>
+        <div class="model-card">
+            <h4>客户获取成本（CAC）— 内部孵化版</h4>
+            <div class="model-row"><span class="lbl">现有 SaaS 客户转化</span><span class="val good">$4-6K（复购谈判，无冷启动）</span></div>
+            <div class="model-row"><span class="lbl">新客户（已有渠道）</span><span class="val">$18-22K（现有销售团队摊销）</span></div>
+            <div class="model-row"><span class="lbl">合规认证摊销</span><span class="val">$5K/客户</span></div>
+            <div class="model-row"><span class="lbl">营销+活动</span><span class="val">$2K（复用 ADVANCE.AI 品牌）</span></div>
+            <div class="model-row"><span class="lbl" style="font-weight:700">加权 CAC（现有:新客 = 7:3）</span><span class="val good">$10-14K ≈ ¥75-100K</span></div>
+            <div class="model-row"><span class="lbl" style="color:#c62828">对比外部竞争获客</span><span class="val warn">外部 CAC 约 $35K — 我们低 60%</span></div>
+        </div>
+        <div class="model-card">
+            <h4>关键效率指标</h4>
+            <div class="model-row"><span class="lbl">LTV / CAC（内部）</span><span class="val good">9-13x ✅ 远优于外部竞争</span></div>
+            <div class="model-row"><span class="lbl">CAC Payback Period</span><span class="val good">2-4 个月（现有客户转化）</span></div>
+            <div class="model-row"><span class="lbl">硬件毛利率</span><span class="val">32-38%</span></div>
+            <div class="model-row"><span class="lbl">顾问软件毛利率</span><span class="val good">85-90%（AI 推理 + 订阅）</span></div>
+            <div class="model-row"><span class="lbl">混合毛利率</span><span class="val good">68-74%（Year 3）</span></div>
+            <div class="model-row"><span class="lbl">孵化 Burn Multiple</span><span class="val good">&lt;1.5x（复用基础设施，优秀）</span></div>
+        </div>
+    </div>
+
+    <!-- 3年财务预测 -->
+    <h3>📊 3 年内部孵化 P&amp;L 模型</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>指标</th>
+                <th>Year 1（2026）</th>
+                <th>Year 2（2027）</th>
+                <th>Year 3（2028）</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>现有客户转化</strong></td>
+                <td>5–8 家</td>
+                <td>+8–12 家</td>
+                <td>+10–15 家</td>
+                <td>从现有 500+ SaaS 客户中筛选有本地化诉求的银行</td>
+            </tr>
+            <tr>
+                <td><strong>新客户（外部）</strong></td>
+                <td>1–2 家</td>
+                <td>3–5 家</td>
+                <td>6–10 家</td>
+                <td>依托 BNM/SBV 认证后的渠道效应</td>
+            </tr>
+            <tr>
+                <td><strong>硬件部署收入</strong></td>
+                <td>¥2.4M–¥4.7M</td>
+                <td>¥5.6M–¥8.2M</td>
+                <td>¥7.5M–¥11.7M</td>
+                <td>ASP ¥470K × 新部署数量</td>
+            </tr>
+            <tr>
+                <td><strong>顾问软件订阅 ARR</strong></td>
+                <td>¥522K–¥870K</td>
+                <td>¥1.57M–¥2.6M</td>
+                <td>¥3.13M–¥5.2M</td>
+                <td>¥87K/客户/年 × 累计部署数</td>
+            </tr>
+            <tr class="kpi-row">
+                <td><strong>总收入</strong></td>
+                <td><strong>¥2.9M–¥5.6M</strong></td>
+                <td><strong>¥7.2M–¥10.8M</strong></td>
+                <td><strong>¥10.6M–¥16.9M</strong></td>
+                <td>Year 1 即可覆盖孵化成本</td>
+            </tr>
+            <tr>
+                <td><strong>孵化团队成本（增量）</strong></td>
+                <td>¥2.1M（复用 ADVANCE.AI 基础设施）</td>
+                <td>¥3.0M</td>
+                <td>¥3.8M</td>
+                <td>仅计算增量专属团队，共享销售/合规/品牌不计入</td>
+            </tr>
+            <tr>
+                <td><strong>增量 EBITDA</strong></td>
+                <td class="check-warn">+¥0.8M ~ +¥3.5M</td>
+                <td class="check-yes">+¥4.2M ~ +¥7.8M</td>
+                <td class="check-yes">+¥6.8M ~ +¥13.1M</td>
+                <td>Year 1 即进入正 EBITDA（外部竞争者 Year 3 才能做到）</td>
+            </tr>
+            <tr>
+                <td><strong>对 ADVANCE.AI 的战略价值</strong></td>
+                <td>SaaS 客户锁定 + 续约率提升</td>
+                <td>合规认证资产（BNM/SBV）</td>
+                <td>硬件 + 顾问软件的独立产品线</td>
+                <td>可独立融资或分拆的期权价值</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 内部孵化预算 -->
+    <h3>💼 内部孵化预算分配</h3>
+    <div class="metric-grid">
+        <div class="metric-card blue">
+            <div class="metric-val">¥2.1M</div>
+            <div class="metric-lbl">Year 1 孵化预算</div>
+            <div class="metric-sub">增量团队（6人）+ 认证 + 硬件样机</div>
+        </div>
+        <div class="metric-card green">
+            <div class="metric-val">Year 1</div>
+            <div class="metric-lbl">预计盈亏平衡</div>
+            <div class="metric-sub">5-8 家现有客户转化即可覆盖增量成本</div>
+        </div>
+        <div class="metric-card orange">
+            <div class="metric-val">60%↓</div>
+            <div class="metric-lbl">CAC 节省</div>
+            <div class="metric-sub">vs 外部创业公司，复用现有关系和品牌</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val">Year 2-3</div>
+            <div class="metric-lbl">可选独立分拆</div>
+            <div class="metric-sub">若达到 $5M+ ARR，可启动外部 A 轮融资或 Spin-off</div>
+        </div>
+    </div>
+
+    <!-- Porter's Five Forces -->
+    <h3>🏛️ Porter's Five Forces 竞争结构</h3>
+    <table>
+        <thead>
+            <tr><th>力量</th><th>强度</th><th>分析</th><th>对你的影响</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>现有竞争者</strong></td>
+                <td><span class="check-warn">🟠 中</span></td>
+                <td>GoAbacus Go1（新，客户未证实）、第四范式 SageOne（中国市场优先）、Shufti Pro（弱品牌）</td>
+                <td>现阶段竞争强度低，2027 年后加剧——抢先建立认证壁垒</td>
+            </tr>
+            <tr>
+                <td><strong>新进入者威胁</strong></td>
+                <td><span class="check-warn">🟠 中</span></td>
+                <td>Jumio/Sumsub 技术能力强，但硬件研发和合规认证需要 18-24 个月</td>
+                <td>窗口期约 2 年，需要快速占据 BNM+SBV 认证先发优势</td>
+            </tr>
+            <tr>
+                <td><strong>替代品威胁</strong></td>
+                <td><span class="check-no">🔴 高</span></td>
+                <td>FPT/VNPT 软件平台已满足越南监管基本要求；银行自建 GPU 推理层成本 <$100K</td>
+                <td>需要清晰回答"为什么不自建？"——答案：ISO 认证 + 快速部署 + 模型持续更新</td>
+            </tr>
+            <tr>
+                <td><strong>买方议价能力</strong></td>
+                <td><span class="check-warn">🟠 中-高</span></td>
+                <td>Tier-1 银行 IT 采购周期长 6-12 个月，且具备内部测评和砍价能力</td>
+                <td>提供 PoC 免费策略 + 首客户折扣，用案例打破议价僵局</td>
+            </tr>
+            <tr>
+                <td><strong>供应商议价能力</strong></td>
+                <td><span class="check-warn">🟠 中</span></td>
+                <td>NVIDIA GPU 供应紧张历史；FPT/VNPT 作为必要中介有一定垄断地位</td>
+                <td>GPU 多源策略（Hailo-8 备选）；FPT 合作深度绑定但不唯一依赖</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="insight">
+        <strong>💡 量化建模核心结论：</strong> 内部孵化的 LTV/CAC = 9-13x，Burn Multiple &lt;1.5x，
+        两项指标均远优于外部创业公司。关键杠杆是<strong>现有客户转化优先</strong>——
+        将 BRI、Mandiri、CIMB Niaga 等现有 SaaS 客户升级到本地顾问系统，
+        可在 Year 1 即实现正 EBITDA，验证产品商业可行性。
+        Year 2 起以这些案例打开 Vietnam/Malaysia 新市场，
+        Year 3 视 ARR 规模决定是否独立分拆融资。
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CRITICAL THINKING — 批判性审视
+     ══════════════════════════════════════════════════ -->
+<section id="critique">
+    <h2>🔍 批判性审视 — 孵化项目的核心风险与机遇</h2>
+    <div class="analyst-badge" style="background:linear-gradient(135deg,#c62828,#e53935);">🧠 Critical Thinking · 内部孵化 vs 外部创业 · 风险重新评估</div>
+
+    <div class="exec-box">
+        <h3>视角转变：从"初创企业"到"内部孵化项目"</h3>
+        <p>
+            前面的量化建模和批判性审视是基于"外部竞争对手"的角度——
+            即一家初创公司如何从零开始进入东南亚市场。但现在<strong>我们是 ADVANCE.AI</strong>，
+            这个项目的性质完全不同：
+        </p>
+        <p>
+            <strong>外部创业视角下的风险：</strong> FPT 合作未验证 → 第一客户获取困难 → CAC 过高 → Year 1 9-12 家客户不现实 → 融资困难
+        </p>
+        <p>
+            <strong>ADVANCE.AI 孵化视角：</strong> 500+ 现有 SaaS 客户 → 现有客户转化 CAC 极低 → Year 1 即可盈亏平衡 → 不需要外部融资 → 融资反而是可选项
+        </p>
+        <p>
+            因此，批判的重点不再是"这个创意能否成功"，而是<strong>"ADVANCE.AI 组织内部如何避免这个项目被 SaaS 产品线拖累或蚕食"</strong>。
+        </p>
+    </div>
+
+    <!-- 假设验证表 -->
+    <h3>✅ 核心假设验证</h3>
+    <table class="assumption-table">
+        <thead>
+            <tr><th>假设</th><th>验证状态</th><th>来源</th><th>影响评级</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>越南 Circular 17/2024 强制生物识别，86M 账户冻结</td>
+                <td><span class="check-yes">✅ 已验证</span></td>
+                <td>多家越南新闻媒体、银行公告（2025/9）</td>
+                <td>🔴 关键驱动力，属实</td>
+            </tr>
+            <tr>
+                <td>深度伪造欺诈 APAC +720%（Q3 2025）</td>
+                <td><span class="check-yes">✅ 已验证</span></td>
+                <td>iProov 2026 年度威胁报告（官方发布 2026/4）</td>
+                <td>🔴 需求引爆信号，属实</td>
+            </tr>
+            <tr>
+                <td>Jumio 通过 BNM 独立评估（零缺陷，2026/3）</td>
+                <td><span class="check-yes">✅ 已验证</span></td>
+                <td>Jumio 官方新闻稿 + BusinessWire</td>
+                <td>🟠 证实路径存在，但 Jumio 体量远大于你</td>
+            </tr>
+            <tr>
+                <td>GoAbacus Go1 已有多家银行客户部署</td>
+                <td><span class="check-no">❌ 未验证</span></td>
+                <td>Go1 于 2026/3 才发布，无具体命名客户</td>
+                <td>🔴 竞品基准数据不可靠，需要独立核实</td>
+            </tr>
+            <tr>
+                <td>ADVANCE.AI 是硬件竞争对手</td>
+                <td><span class="check-no">❌ 错误</span></td>
+                <td>ADVANCE.AI 是纯 SaaS 云平台，无硬件计划</td>
+                <td>🟢 利好：硬件竞争比预想中少</td>
+            </tr>
+            <tr>
+                <td>FPT/VNPT 会自建硬件一体机</td>
+                <td><span class="check-no">❌ 未发现迹象</span></td>
+                <td>两家均为纯软件 eKYC 平台，无硬件招聘或专利迹象</td>
+                <td>🟢 利好：他们更可能成为合作伙伴</td>
+            </tr>
+            <tr>
+                <td>BNM 公开维护已批准厂商清单</td>
+                <td><span class="check-warn">⚠️ 部分错误</span></td>
+                <td>BNM 无公开厂商清单，需直接与评估机构沟通</td>
+                <td>🟠 影响 Malaysia 市场准入策略</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 5大孵化风险 -->
+    <h3>🚨 5 个孵化项目核心风险</h3>
+    <div class="critique-grid">
+        <div class="critique-card crit-red">
+            <div class="critique-header">
+                <div class="critique-icon">🔄</div>
+                <div>
+                    <div class="critique-title">SaaS 收入蚕食：顾问系统与现有合同的定价冲突</div>
+                    <span class="critique-severity sev-critical">严重</span>
+                </div>
+            </div>
+            <div class="critique-body">
+                ADVANCE.AI 现有 SaaS 客户已按 API 调用量付费。顾问系统若以"升级套餐"推出，将直接影响现有合同结构。
+                <ul>
+                    <li>BRI / Mandiri 已有 SaaS 合同，如何说服他们"追加"而非"替换"？</li>
+                    <li>本地部署版本的毛利率（60-65%）低于 SaaS（75-80%），内部 P&amp;L 压力真实</li>
+                    <li>销售团队的提成结构若不调整，可能无意中引导客户降级而非升级</li>
+                </ul>
+            </div>
+            <div class="critique-fix">
+                <strong>修正：</strong> 建立明确的产品分层协议——SaaS 保持原有 API 合同，顾问系统作为"增值咨询层"单独定价（¥30-50K/年软件订阅 + 硬件摊销）。明确告知销售团队：升级顾问系统不减少 API 收入，而是叠加。先与 3 家客户完成合同结构试验。
+            </div>
+        </div>
+
+        <div class="critique-card crit-red">
+            <div class="critique-header">
+                <div class="critique-icon">🏢</div>
+                <div>
+                    <div class="critique-title">内部政治阻力：孵化项目 vs. SaaS 主线路线图</div>
+                    <span class="critique-severity sev-critical">严重</span>
+                </div>
+            </div>
+            <div class="critique-body">
+                孵化项目依赖现有销售、工程、运营资源，但这些资源优先级受 SaaS 主线控制。
+                <ul>
+                    <li>销售团队的 quota 仍以 SaaS ARR 为核心，顾问系统的优先级天然偏低</li>
+                    <li>工程资源若被孵化团队"借用"，将直接引发 SaaS 团队的抵制</li>
+                    <li>若孵化项目 Year 1 未达预期，预算将在年度规划中被 SaaS 团队蚕食</li>
+                </ul>
+            </div>
+            <div class="critique-fix">
+                <strong>修正：</strong> 孵化项目必须获得独立 headcount（哪怕 4-5 人），不"借用"主线资源。设立独立 P&amp;L 核算单元，KPI 与 SaaS 团队解耦。建议向 CEO/CTO 直线汇报，而非通过 SaaS 产品线管理。同时制定"协作协议"：孵化团队调用销售资源需支付内部服务费，以量化贡献。
+            </div>
+        </div>
+
+        <div class="critique-card crit-red">
+            <div class="critique-header">
+                <div class="critique-icon">🎭</div>
+                <div>
+                    <div class="critique-title">产品身份模糊：客户会把"顾问系统"和"eKYC API"混淆</div>
+                    <span class="critique-severity sev-critical">严重</span>
+                </div>
+            </div>
+            <div class="critique-body">
+                "身份风险 AI 顾问"的定位新颖，但银行采购部门的心智模型仍是"eKYC 软件"或"合规工具箱"。
+                <ul>
+                    <li>风控部门懂需求，但采购部门会将其归类为"IT 基础设施"——导致走错审批流程</li>
+                    <li>"顾问"定位暗含人工服务，银行会问：是 AI 自动输出，还是有人在背后？</li>
+                    <li>4 个模块（研判/合规/策略/调查）如何被销售成一个连贯产品，而非 4 个独立插件？</li>
+                </ul>
+            </div>
+            <div class="critique-fix">
+                <strong>修正：</strong> 制作一份"产品定义白皮书"（2-3 页），明确：① 这是软件+硬件的集成系统，无人工介入；② 4 个模块是同一系统的不同工作流，单一合同覆盖；③ 与现有 eKYC API 的关系是"升级版本"而非替代。针对不同角色（CRO/CISO/采购）准备不同版本的产品简介。
+            </div>
+        </div>
+
+        <div class="critique-card crit-orange">
+            <div class="critique-header">
+                <div class="critique-icon">💰</div>
+                <div>
+                    <div class="critique-title">定价体系冲突：如何向现有客户升级定价而不破坏关系</div>
+                    <span class="critique-severity sev-moderate">中等</span>
+                </div>
+            </div>
+            <div class="critique-body">
+                现有 SaaS 客户按调用量计费，顾问系统需引入硬件摊销 + 年度软件订阅的混合定价模型。
+                <ul>
+                    <li>客户会对比：原来每次 API 调用 $0.05，新系统年费 ¥50-80K，值不值？</li>
+                    <li>TOC（总拥有成本）必须明确计算，否则销售谈判会陷入价格质疑泥潭</li>
+                    <li>硬件采购周期（银行 IT 预算通常提前 6-12 个月锁定）与孵化时间线可能错位</li>
+                </ul>
+            </div>
+            <div class="critique-fix">
+                <strong>修正：</strong> 设计"迁移定价"方案：现有 SaaS 合同金额可抵扣顾问系统年费（最高 30%）。准备 TOC 对比模板，量化顾问系统带来的人工成本节省（一名风控分析师年薪 IDR 150M ≈ ¥70K，顾问系统可替代 2-3 名低级分析师的工作量）。
+            </div>
+        </div>
+
+        <div class="critique-card crit-orange">
+            <div class="critique-header">
+                <div class="critique-icon">🎯</div>
+                <div>
+                    <div class="critique-title">竞争格局重构：我们的真正对手不再是 Jumio</div>
+                    <span class="critique-severity sev-moderate">中等</span>
+                </div>
+            </div>
+            <div class="critique-body">
+                作为 ADVANCE.AI，竞争对手已从"能做 eKYC 的 SaaS 厂商"升级为"能复制顾问定位的玩家"。
+                <ul>
+                    <li>Huawei/Alibaba Cloud 已在 SEA 银行部署 AI 风控解决方案，有本地化能力</li>
+                    <li>Big 4 咨询（德勤/毕马威）正在向银行推销 AI 风控实施服务，与"顾问"定位直接竞争</li>
+                    <li>银行内部团队在 LLM 能力成熟后，可能选择自建"顾问系统"而非外购</li>
+                </ul>
+            </div>
+            <div class="critique-fix">
+                <strong>修正：</strong> 核心护城河应聚焦在 ADVANCE.AI 独有的资产：① 3M+ 日请求积累的 SEA 欺诈数据（Huawei 无法复制）；② 现有 500+ 客户的行为基线模型；③ BRI/Mandiri 的实战校准案例。将这些数据资产明确写入产品价值主张——"顾问系统的建议来自 SEA 最大规模的真实欺诈数据库"。
+            </div>
+        </div>
+
+        <div class="critique-card crit-green">
+            <div class="critique-header">
+                <div class="critique-icon">🚀</div>
+                <div>
+                    <div class="critique-title">孵化优势：外部竞争对手无法复制的起跑线</div>
+                    <span class="critique-severity sev-low">核心优势</span>
+                </div>
+            </div>
+            <div class="critique-body">
+                相比外部创业公司，ADVANCE.AI 的孵化项目拥有 3 个不可复制的结构性优势：
+                <ul>
+                    <li><strong>零冷启动：</strong>BRI/Mandiri/CIMB Niaga 已是现有客户，PoC 不需要"说服"，只需要"升级"</li>
+                    <li><strong>数据护城河：</strong>3M+ 日 API 请求 = SEA 最大规模的身份欺诈训练数据，顾问系统的"建议质量"直接来源于此</li>
+                    <li><strong>LTV/CAC = 9-13x：</strong>外部竞争对手的 CAC 约 $35K，我们的存量转化 CAC 仅 $4-6K——这意味着即使产品定价一致，我们的利润率也高出 3-4 倍</li>
+                </ul>
+            </div>
+            <div class="critique-fix">
+                <strong>结论：</strong> 最大的风险不是"能不能做成"，而是"内部能不能真正支持"。确保孵化项目获得独立资源、独立 P&amp;L、高管背书，比任何市场策略都更关键。一旦内部支持到位，这是 ADVANCE.AI 过去 5 年积累的最自然的产品延伸。
+            </div>
+        </div>
+    </div>
+
+    <!-- 孵化方案评分卡 -->
+    <h3>🏆 孵化项目评分卡（6 维度）</h3>
+    <div class="scorecard">
+        <div class="score-item">
+            <div class="score-dim">📍 市场机会与资产匹配度</div>
+            <div class="score-bar-wrap">
+                <div class="score-bar" style="width:90%;background:linear-gradient(90deg,#43a047,#66bb6a);"></div>
+            </div>
+            <div class="score-val">9 / 10</div>
+            <div class="score-note">强制本地化缺口真实，ADVANCE.AI 的现有客户群完美匹配目标市场</div>
+        </div>
+        <div class="score-item">
+            <div class="score-dim">⚔️ 竞争差异化可持续性</div>
+            <div class="score-bar-wrap">
+                <div class="score-bar" style="width:80%;background:linear-gradient(90deg,#5c6bc0,#7986cb);"></div>
+            </div>
+            <div class="score-val">8 / 10</div>
+            <div class="score-note">数据护城河强，但顾问定位需要持续投入才能超越咨询公司</div>
+        </div>
+        <div class="score-item">
+            <div class="score-dim">💹 财务可行性与投入回报</div>
+            <div class="score-bar-wrap">
+                <div class="score-bar" style="width:85%;background:linear-gradient(90deg,#00897b,#26a69a);"></div>
+            </div>
+            <div class="score-val">8.5 / 10</div>
+            <div class="score-note">LTV/CAC 9-13x，Year 1 盈亏平衡，孵化预算 ¥2.1M 合理</div>
+        </div>
+        <div class="score-item">
+            <div class="score-dim">🏢 内部组织支持度</div>
+            <div class="score-bar-wrap">
+                <div class="score-bar" style="width:55%;background:linear-gradient(90deg,#f57c00,#ffa726);"></div>
+            </div>
+            <div class="score-val">5.5 / 10</div>
+            <div class="score-note">最大未知数：是否有独立团队、独立 P&amp;L、高管直线汇报？这决定成败</div>
+        </div>
+        <div class="score-item">
+            <div class="score-dim">🎯 产品定位清晰度</div>
+            <div class="score-bar-wrap">
+                <div class="score-bar" style="width:65%;background:linear-gradient(90deg,#5c6bc0,#7986cb);"></div>
+            </div>
+            <div class="score-val">6.5 / 10</div>
+            <div class="score-note">"专业咨询顾问"定位创新但需要大量市场教育，销售材料尚需完善</div>
+        </div>
+        <div class="score-item">
+            <div class="score-dim">🗺️ 执行路线图可信度</div>
+            <div class="score-bar-wrap">
+                <div class="score-bar" style="width:75%;background:linear-gradient(90deg,#43a047,#66bb6a);"></div>
+            </div>
+            <div class="score-val">7.5 / 10</div>
+            <div class="score-note">存量客户转化路径清晰，Year 1 5-8 家目标在有内部支持前提下可实现</div>
+        </div>
+    </div>
+
+    <!-- 立即行动清单 -->
+    <h3>🎯 立即行动清单（按优先级）</h3>
+    <div class="action-list">
+        <div class="action-item">
+            <div class="action-num">1</div>
+            <div class="action-content">
+                <div class="action-title">锁定 3-5 家最有转化可能的存量客户，启动非正式需求对话</div>
+                <div class="action-desc">目标：BRI、Mandiri、CIMB Niaga 是首选（已有信任关系）。非正式对话目的：验证"本地部署 + 顾问系统"的真实需求，同时试探定价接受度。这不是销售拜访，是需求共创——对客户说"我们在考虑一个新产品，你会有兴趣参与共建吗？"</div>
+                <div class="action-meta">
+                    <span class="action-tag tag-now">本月内</span>
+                    <span class="action-tag tag-usd">¥0（利用现有关系）</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-item">
+            <div class="action-num">2</div>
+            <div class="action-content">
+                <div class="action-title">向 CEO/CTO 申请独立孵化预算和独立团队编制</div>
+                <div class="action-desc">核心诉求：4-5 人独立 headcount（不从 SaaS 借调），独立 P&amp;L 核算，直线汇报路径。这是孵化成功的组织前提——没有独立资源，项目将在季度优先级博弈中被边缘化。准备一份 1 页纸的"孵化章程"，明确团队边界、KPI 和资源保障。</div>
+                <div class="action-meta">
+                    <span class="action-tag tag-now">本月内</span>
+                    <span class="action-tag tag-usd">¥2.1M / year（孵化预算）</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-item">
+            <div class="action-num">3</div>
+            <div class="action-content">
+                <div class="action-title">制定"顾问系统"产品定义白皮书和分角色销售材料</div>
+                <div class="action-desc">四个核心受众需要不同材料：① CRO（首席风险官）：系统如何提升风险识别精度；② CISO（首席信息安全官）：数据不出境，合规保障；③ 采购部门：TCO 对比，ROI 量化；④ 监管沟通：顾问系统如何符合 OJK/BNM 要求。缺少任何一份，销售流程都会在对应关卡卡壳。</div>
+                <div class="action-meta">
+                    <span class="action-tag tag-soon">1 个月内</span>
+                    <span class="action-tag tag-usd">¥3-5万（设计 + 文案）</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-item">
+            <div class="action-num">4</div>
+            <div class="action-content">
+                <div class="action-title">设计"迁移定价"方案，防止 SaaS 合同蚕食</div>
+                <div class="action-desc">核心原则：顾问系统是"加法"而非"替换"。建议方案：① 现有 SaaS 合同不变；② 顾问系统年费 ¥30-50K，覆盖 4 个模块的软件使用权；③ 硬件以分期摊销方式（¥5-8K/月）而非一次性采购纳入合同——降低客户决策门槛。准备 Excel 版 TCO 计算器，让客户自行测算 ROI。</div>
+                <div class="action-meta">
+                    <span class="action-tag tag-soon">1-2 个月内</span>
+                    <span class="action-tag tag-usd">¥0（内部设计）</span>
+                </div>
+            </div>
+        </div>
+        <div class="action-item">
+            <div class="action-num">5</div>
+            <div class="action-content">
+                <div class="action-title">完成数据资产盘点，将 SEA 欺诈数据库作为核心竞争壁垒量化</div>
+                <div class="action-desc">ADVANCE.AI 的 3M+ 日请求是真实护城河，但需要量化才能成为销售武器：① 数据量：多少条已标注欺诈案例？② 覆盖范围：哪些银行、哪些欺诈类型？③ 更新频率：模型多久迭代一次？这份数据资产白皮书将成为对抗 Huawei/咨询公司的核心弹药——他们有钱有人，但没有这份数据。</div>
+                <div class="action-meta">
+                    <span class="action-tag tag-soon">2 个月内</span>
+                    <span class="action-tag tag-usd">¥0（内部梳理）</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-box">
+        <h3>🎯 孵化裁决</h3>
+        <p>
+            <span class="cta-highlight">强烈建议立即启动——这是 ADVANCE.AI 5 年积累的最自然变现路径。</span>
+            市场机会真实，竞争窗口存在，现有客户关系消除了最大的执行风险。
+            作为外部创业公司，这个方案是 6/10；作为 ADVANCE.AI 的内部孵化项目，这个方案是
+            <span class="cta-highlight">8.5/10</span>。
+            唯一需要解决的核心问题不是市场，而是<span class="cta-highlight">内部组织</span>：
+            确保孵化团队获得独立编制、独立 P&amp;L、高管直线支持，
+            BRI/Mandiri/CIMB Niaga 这三个客户就已经足以让 Year 1 盈亏平衡。
+            从今天开始的第一件事：拿到那张"孵化批准书"。
+        </p>
+    </div>
+</section>
+
+</div><!-- .page -->
+
+<footer class="footer">
+    <p>ADVANCE.AI · 身份风险 AI 顾问系统 · 东南亚孵化项目方案</p>
+    <p style="margin-top:6px;">报告日期：2026 年 6 月 17 日 · 数据来源：MAS / BNM / OJK / SBV 官方文件，Gartner、IDC，公司公告，Biometric Update</p>
+</footer>
+
+</body>
+</html>
